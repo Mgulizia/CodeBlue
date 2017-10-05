@@ -1,0 +1,88 @@
+﻿@using CodeBlue.Models
+@using CodeBlue.Models.Helpers
+@model CodeBlue.ViewModels.Accounts.ManageViewModel
+@{
+    ViewBag.Title = "Manage Accounts";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<br />
+<div class="panel panel-default">
+
+    <div class="panel-heading">
+        @if (User.IsInRole(RoleNames.CanManageUsers))
+        {
+            <div class="btn-toolbar pull-right" style="margin: 14px 0px;">
+                @Html.ActionLink("Add User", "Create", "Account", new { }, new { @class = "btn btn-primary" })
+            </div>
+        }
+
+        <h2>Manage Users</h2>
+    </div><!-- End of Panel Heading -->
+
+    <div class="panel-body">
+
+        <table class="table table-responsive table-striped">
+            <thead>
+                <tr>
+                    <th>Status</th>
+                    <td>Name</td>
+                    <td>Email</td>
+                    <td>Position</td>
+                    <td>Phone Number</td>
+                    @if (User.IsInRole(RoleNames.CanManageUsers))
+                    {
+                        <td>Edit</td>
+                    }
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var user in Model.Users)
+                {
+
+                    <tr>
+                        @{
+
+                        var formated = PhoneHelper.DisplayNumber(user.CellNumber);
+                        var icon = "glyphicon glyphicon-remove";
+                        var color = "color: #e07979";
+                        var text = "Disabled";
+                        if (user.IsEnabled)
+                        {
+                            icon = "glyphicon glyphicon-ok";
+                            color = "color: lightgreen";
+                            text = "Enabled";
+                        }
+                    }
+                    <td>@text <span class="@icon" style="@color"></span></td>
+                        <td>@user.FirstName @user.LastName</td>
+                        <td>@user.UserName</td>
+                    <td>@user.Position.TitleDescription</td>
+                    <td><a href="tel:@user.CellNumber"> @formated</a></td>
+                    @if (User.IsInRole(RoleNames.CanManageUsers))
+                    {
+                        <td>@Html.ActionLink("Edit User", "Edit", "Account", new { id = user.Id }, new { @class = "btn btn-sm btn-default" })</td>
+
+                    }
+
+                </tr>
+                        }
+            </tbody>
+        </table>
+
+    </div><!-- End of Panel Body -->
+
+</div><!-- End of Panel -->
+
+
+
+
+
+
+
+
+
+@section scripts{
+
+}
+

@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Globalization;
+using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -9,48 +9,41 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using CodeBlue.Models;
+using CodeBlue.ViewModels.Accounts;
+using Microsoft.Ajax.Utilities;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace CodeBlue.Controllers
 {
+  
     [Authorize]
     public class AccountController : Controller
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private ApplicationDbContext _context;
+
 
         public AccountController()
         {
+            _context = new ApplicationDbContext();
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
+            _context = new ApplicationDbContext();
         }
 
-        public ApplicationSignInManager SignInManager
-        {
-            get
-            {
-                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
-            }
-            private set 
-            { 
-                _signInManager = value; 
-            }
-        }
 
-        public ApplicationUserManager UserManager
-        {
-            get
-            {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            }
-            private set
-            {
-                _userManager = value;
-            }
-        }
+
+
+
+
+
+
+        //------------------------------ LOG IN ACTIONS ------------------------------------------------------------------------------
 
         //
         // GET: /Account/Login
@@ -91,86 +84,214 @@ namespace CodeBlue.Controllers
             }
         }
 
-        //
-        // GET: /Account/VerifyCode
-        [AllowAnonymous]
-        public async Task<ActionResult> VerifyCode(string provider, string returnUrl, bool rememberMe)
+
+
+        //----------------------------- INDEX VIEW ACTION --------------------------------------------------------------------
+        [Authorize(Roles = RoleNames.CanManageUsers)]
+        public ActionResult Index()
         {
-            // Require that the user has already logged in via username/password or external login
-            if (!await SignInManager.HasBeenVerifiedAsync())
+            var activeUsers = _context.Users.Include(c => c.Position).ToList();
+
+            var viewModel = new ManageViewModel()
             {
-                return View("Error");
-            }
-            return View(new VerifyCodeViewModel { Provider = provider, ReturnUrl = returnUrl, RememberMe = rememberMe });
+                Users = activeUsers
+            };
+
+            return View(viewModel);
         }
 
-        //
-        // POST: /Account/VerifyCode
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> VerifyCode(VerifyCodeViewModel model)
+
+
+
+        //------------------------------ USER CREATION ACTIONS ------------------------------------------------------------------------------
+
+        //------------------------------ New Item Creation ---------------------------------------------------------------------
+        // GET: /Account/Create
+        [Authorize(Roles = RoleNames.CanManageUsers)]
+        public ActionResult Create(ApplicationUser user)
         {
+            if (user.UserName == null)
+                user = new ApplicationUser();
+        
+            var positions = _context.Positions.ToList();
+            var roles = _context.ApplicationRoles.ToList();
+        
+            var viewModel = new ApplicationUserAddViewModel()
+            {
+                ApplicationUser = user,
+                Roles = roles,
+                Positions = positions
+            };
+            return View("UserNewForm", viewModel);
+        }
+        
+
+        //------------------------------ Edit Item ------------------------------------------------------------------------------
+        
+        [Authorize(Roles = RoleNames.CanManageUsers)]
+        public ActionResult Edit(string id)
+        {
+            var user = UserManager.FindById(id);
+        
+        
+            if (user.UserName == null)
+                return HttpNotFound();
+
+            var positions = _context.Positions.ToList();
+            var roles = _context.ApplicationRoles.ToList();
+        
+            var viewModel = new ApplicationUserEditViewModel()
+            {
+                ApplicationUser = user,
+                Roles = roles,
+                Positions = positions
+            };
+            return View("UserEditForm", viewModel);
+        }
+        
+        
+        
+        //------------------------------ Save New Item ------------------------------------------------------------------------------
+        // POST: /Account/Save
+        [HttpPost]
+        [Authorize(Roles = RoleNames.CanManageUsers)]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Save(ApplicationUserAddViewModel model)
+        {
+            var user = new ApplicationUser();
+            var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(_context));
+            var selectedRoles = new List<ApplicationRoles>();
+        
             if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-
-            // The following code protects for brute force attacks against the two factor codes. 
-            // If a user enters incorrect codes for a specified amount of time then the user account 
-            // will be locked out for a specified amount of time. 
-            // You can configure the account lockout settings in IdentityConfig
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
-            switch (result)
-            {
-                case SignInStatus.Success:
-                    return RedirectToLocal(model.ReturnUrl);
-                case SignInStatus.LockedOut:
-                    return View("Lockout");
-                case SignInStatus.Failure:
-                default:
-                    ModelState.AddModelError("", "Invalid code.");
-                    return View(model);
-            }
-        }
-
-        //
-        // GET: /Account/Register
-        [AllowAnonymous]
-        public ActionResult Register()
-        {
-            return View();
-        }
-
-        //
-        // POST: /Account/Register
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model)
-        {
+                return View("UserNewForm", model);
+        
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+        
+                user.UserName = model.ApplicationUser.Email;
+                user.Email = model.ApplicationUser.Email;
+                user.CellNumber = model.ApplicationUser.CellNumber;
+                user.PositionId = model.ApplicationUser.PositionId;
+                user.FirstName = model.ApplicationUser.FirstName;
+                user.LastName = model.ApplicationUser.LastName;
+                user.IsEnabled = true;
+        
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
+                    foreach (var item in model.Roles)
+                    {
+                        if (item.IsChecked)
+                        {
+                            await UserManager.AddToRoleAsync(user.Id, item.Name);
+                        }
+                    }
+        
+                    return RedirectToAction("Index", "Account");
+                }
+                AddErrors(result);
+            }
+        
+            model.Positions = _context.Positions.ToList();
+            model.Roles = _context.ApplicationRoles.ToList();
+            // If we got this far, something failed, redisplay form
+            return View("UserNewForm", model);
+        }
+
+
+
+
+
+        
+        //------------------------------ Save Edited Item ------------------------------------------------------------------------------
+        // POST: /Account/Save
+        [HttpPost]
+        [Authorize(Roles = RoleNames.CanManageUsers)]
+        public async Task<ActionResult> Update(ApplicationUserEditViewModel model)
+        {
+        
+            var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(_context));
+            var selectedRoles = new List<ApplicationRoles>();
+        
+        
+            if (!ModelState.IsValid)
+                return View("UserEditForm", model);
+        
+            if (ModelState.IsValid)
+            {
+        
+                var user = UserManager.FindById(model.ApplicationUser.Id);
+                user.UserName = model.ApplicationUser.Email;
+                user.Email = model.ApplicationUser.Email;
+                user.CellNumber = model.ApplicationUser.CellNumber;
+                user.PositionId = model.ApplicationUser.PositionId;
+                user.FirstName = model.ApplicationUser.FirstName;
+                user.LastName = model.ApplicationUser.LastName;
+                user.IsEnabled = model.ApplicationUser.IsEnabled;
+        
+                if (user.IsEnabled == false)
+                {
+                    user.LockoutEnabled = true;
+                    user.LockoutEndDateUtc = new DateTime(2900, 12, 25);
+                }
+                else
+                {
+                    user.LockoutEnabled = false;
+                    user.LockoutEndDateUtc = null;
+                }
+        
+                if (!model.Password.IsNullOrWhiteSpace())
+                {
+                    UserManager.RemovePassword(user.Id);
+                    var password = UserManager.PasswordHasher.HashPassword(model.Password);
+                    user.PasswordHash = password;
+                }
+        
+        
+                var result = UserManager.Update(user);
+                if (result.Succeeded)
+                {
+                    foreach (var item in model.Roles)
+                    {
+                        if (item.IsChecked)
+                        {
+                            await UserManager.AddToRoleAsync(user.Id, item.Name);
+                        }
+                        else
+                        {
+                            await UserManager.RemoveFromRoleAsync(user.Id, item.Name);
+                        }
+                    }
+        
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-
-                    return RedirectToAction("Index", "Home");
+        
+                    return RedirectToAction("Index", "Account");
                 }
                 AddErrors(result);
             }
-
-            // If we got this far, something failed, redisplay form
-            return View(model);
+            model.ApplicationUser = model.ApplicationUser;
+            model.Positions = _context.Positions.ToList();
+            model.Roles = _context.ApplicationRoles.ToList();
+            return View("UserEditForm", model);
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //------------------------------ MISC USER ACTIONS ------------------------------------------------------------------------------
 
         //
         // GET: /Account/ConfirmEmail
@@ -418,9 +539,84 @@ namespace CodeBlue.Controllers
                     _signInManager.Dispose();
                     _signInManager = null;
                 }
+
+                if (_context != null)
+                {
+                    _context.Dispose();
+                    _context = null;
+                }
             }
 
             base.Dispose(disposing);
+        }
+
+
+
+        public ApplicationSignInManager SignInManager
+        {
+            get
+            {
+                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+            }
+            private set
+            {
+                _signInManager = value;
+            }
+        }
+
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
+
+        //
+        // GET: /Account/VerifyCode
+        [AllowAnonymous]
+        public async Task<ActionResult> VerifyCode(string provider, string returnUrl, bool rememberMe)
+        {
+            // Require that the user has already logged in via username/password or external login
+            if (!await SignInManager.HasBeenVerifiedAsync())
+            {
+                return View("Error");
+            }
+            return View(new VerifyCodeViewModel { Provider = provider, ReturnUrl = returnUrl, RememberMe = rememberMe });
+        }
+
+        //
+        // POST: /Account/VerifyCode
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> VerifyCode(VerifyCodeViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            // The following code protects for brute force attacks against the two factor codes. 
+            // If a user enters incorrect codes for a specified amount of time then the user account 
+            // will be locked out for a specified amount of time. 
+            // You can configure the account lockout settings in IdentityConfig
+            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
+            switch (result)
+            {
+                case SignInStatus.Success:
+                    return RedirectToLocal(model.ReturnUrl);
+                case SignInStatus.LockedOut:
+                    return View("Lockout");
+                case SignInStatus.Failure:
+                default:
+                    ModelState.AddModelError("", "Invalid code.");
+                    return View(model);
+            }
         }
 
         #region Helpers

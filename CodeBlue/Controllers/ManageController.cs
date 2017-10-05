@@ -7,6 +7,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using CodeBlue.Models;
+using CodeBlue.ViewModels.Accounts;
 
 namespace CodeBlue.Controllers
 {
@@ -18,6 +19,7 @@ namespace CodeBlue.Controllers
 
         public ManageController()
         {
+
         }
 
         public ManageController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)

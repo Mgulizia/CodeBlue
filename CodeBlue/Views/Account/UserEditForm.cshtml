@@ -1,0 +1,123 @@
+﻿@using System.Net.Mime
+@using System.Text.RegularExpressions
+@using CodeBlue.Models.Helpers
+@using Microsoft.Ajax.Utilities
+@using Roles = CodeBlue.Models.Helpers.RoleHelper
+@model CodeBlue.ViewModels.Accounts.ApplicationUserEditViewModel
+@{
+    ViewBag.Title = "Edit User";
+    var title = (Model.ApplicationUser.UserName.IsNullOrWhiteSpace()) ? "Create New User" : "Edit User";
+    var buttonTxt = (Model.ApplicationUser.UserName.IsNullOrWhiteSpace()) ? "Add User" : "Update User";
+}
+
+<br />
+@using (Html.BeginForm("Update", "Account"))
+{
+
+
+
+    <h2>@title</h2>
+
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.ApplicationUser.FirstName)
+        @Html.TextBoxFor(m => m.ApplicationUser.FirstName, new {@class = "form-control"})
+        @Html.ValidationMessageFor(m => m.ApplicationUser.FirstName)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.ApplicationUser.LastName)
+        @Html.TextBoxFor(m => m.ApplicationUser.LastName, new {@class = "form-control"})
+        @Html.ValidationMessageFor(m => m.ApplicationUser.LastName)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.ApplicationUser.Email)
+        @Html.TextBoxFor(m => m.ApplicationUser.Email, new {@class = "form-control"})
+        @Html.ValidationMessageFor(m => m.ApplicationUser.Email)
+    </div>
+
+    <hr/>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Password)
+        @Html.PasswordFor(m => m.Password, new {@class = "form-control"})
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.ConfirmPassword)
+        @Html.PasswordFor(m => m.ConfirmPassword, new {@class = "form-control"})
+        @Html.ValidationMessageFor(m => m.ConfirmPassword)
+    </div>
+
+    <hr/>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.ApplicationUser.CellNumber)
+        @Html.TextBoxFor(m => m.ApplicationUser.CellNumber, new {@class = "form-control"})
+        @Html.ValidationMessageFor(m => m.ApplicationUser.CellNumber)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.ApplicationUser.PositionId)
+        @Html.DropDownListFor(m => m.ApplicationUser.PositionId, new SelectList(Model.Positions, "Id", "TitleDescription"), "-- Select Position --", new {@class = "form-control"})
+        @Html.ValidationMessageFor(m => m.ApplicationUser.PositionId)
+    </div>
+
+
+
+    <h4>User Permissions</h4>
+
+    for (int i = 0; i < Model.Roles.Count; i++)
+    {
+        <div class="checkbox">
+            @{
+                var hasRole = false;
+                if (!Model.ApplicationUser.Email.IsNullOrWhiteSpace())
+                {
+                    hasRole = RoleHelper.HasRole(Model.ApplicationUser.Id, Model.Roles[i].Name);
+
+                }
+
+            }
+            <label>
+                @if (hasRole)
+                {
+                    Model.Roles[i].IsChecked = true;
+
+                    @Html.CheckBoxFor(m => m.Roles[i].IsChecked, new {@checked = "checked"})
+                    ;
+                    @Model.Roles[i].RoleDescription
+                }
+                else
+                {
+                    @Html.CheckBoxFor(m => m.Roles[i].IsChecked)
+                    ;
+                    @Model.Roles[i].RoleDescription
+                }
+
+
+
+                @Html.HiddenFor(m => m.Roles[i].Id)
+                @Html.HiddenFor(m => m.Roles[i].Name)
+            </label>
+        </div>
+
+    }
+    <hr/>
+    <h4>User Status</h4>
+    <label>
+        @Html.CheckBoxFor(m => m.ApplicationUser.IsEnabled) Sign in Allowed
+    </label>
+
+
+
+    @Html.HiddenFor(m => m.ApplicationUser.Id)
+    @Html.AntiForgeryToken()
+    <button type="submit" class="btn btn-primary">@buttonTxt</button>
+
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
