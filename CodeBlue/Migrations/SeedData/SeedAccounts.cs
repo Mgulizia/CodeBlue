@@ -24,8 +24,8 @@ namespace CodeBlue.Migrations.SeedData
                 user.UserName = "admin@codeblue.com";
                 user.CellNumber = "4025026023";
                 user.Email = "admin@codeblue.com";
-                user.FirstName = "Jojotamama";
-                user.LastName = "Sovetiregu";
+                user.FirstName = "Jotamama";
+                user.LastName = "Vetiregu";
                 user.PositionId = 1;
                 user.IsEnabled = true;
 
