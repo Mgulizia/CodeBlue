@@ -20,7 +20,8 @@ namespace CodeBlue.Migrations.SeedData
                 new Position() { Id = 3, TitleDescription = "Advanced Technician"},
                 new Position() { Id = 4, TitleDescription = "Technician"},
                 new Position() { Id = 5, TitleDescription = "Field Technician"},
-                new Position() { Id = 6, TitleDescription = "Customer Support Staff"}
+                new Position() { Id = 6, TitleDescription = "Customer Support Staff"},
+                new Position() { Id = 7, TitleDescription = "Basic User / Customer"}
             );
             context.SaveChanges();
 
