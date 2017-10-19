@@ -207,6 +207,14 @@
     <Compile Include="Migrations\201710051550399_addUserPropertiesAndPositionModel.Designer.cs">
       <DependentUpon>201710051550399_addUserPropertiesAndPositionModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201710190038249_AddedBasicTicketModel.cs" />
+    <Compile Include="Migrations\201710190038249_AddedBasicTicketModel.Designer.cs">
+      <DependentUpon>201710190038249_AddedBasicTicketModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710190041247_addedTechAssignmentToTicketModel.cs" />
+    <Compile Include="Migrations\201710190041247_addedTechAssignmentToTicketModel.Designer.cs">
+      <DependentUpon>201710190041247_addedTechAssignmentToTicketModel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\SeedData\SeedAccounts.cs" />
     <Compile Include="Migrations\SeedData\SeedPositions.cs" />
@@ -310,6 +318,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201710051550399_addUserPropertiesAndPositionModel.resx">
       <DependentUpon>201710051550399_addUserPropertiesAndPositionModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710190038249_AddedBasicTicketModel.resx">
+      <DependentUpon>201710190038249_AddedBasicTicketModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710190041247_addedTechAssignmentToTicketModel.resx">
+      <DependentUpon>201710190041247_addedTechAssignmentToTicketModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
