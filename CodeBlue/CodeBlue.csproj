@@ -215,6 +215,10 @@
     <Compile Include="Migrations\201710190041247_addedTechAssignmentToTicketModel.Designer.cs">
       <DependentUpon>201710190041247_addedTechAssignmentToTicketModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201710232328293_addedDepartmentModelToDb.cs" />
+    <Compile Include="Migrations\201710232328293_addedDepartmentModelToDb.Designer.cs">
+      <DependentUpon>201710232328293_addedDepartmentModelToDb.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\SeedData\SeedAccounts.cs" />
     <Compile Include="Migrations\SeedData\SeedPositions.cs" />
@@ -326,6 +330,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201710190041247_addedTechAssignmentToTicketModel.resx">
       <DependentUpon>201710190041247_addedTechAssignmentToTicketModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710232328293_addedDepartmentModelToDb.resx">
+      <DependentUpon>201710232328293_addedDepartmentModelToDb.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -13,7 +13,7 @@ namespace CodeBlue.Models
         public DbSet<ApplicationRoles> ApplicationRoles { get; set; }
         public DbSet<Position> Positions { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
-
+        public DbSet<Department> Departments { get; set; }
 
 
 
