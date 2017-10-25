@@ -1,13 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
+using CodeBlue.Models;
+using CodeBlue.ViewModels.Ticket;
+using Microsoft.Ajax.Utilities;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace CodeBlue.Controllers
 {
     public class TicketController : Controller
     {
+        public ApplicationDbContext _context { get; set; }
+        public ApplicationUserManager _userManager { get; set; }
+
+        public TicketController()
+        {
+            _context = new ApplicationDbContext();
+ 
+        }
+
+
+
+
         // GET: Ticket
         public ActionResult Index()
         {
@@ -17,13 +36,39 @@ namespace CodeBlue.Controllers
         // GET: Ticket/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+
+
+            var ticket = new Ticket
+            {
+                CreatedDate = DateTime.Today,
+                CreatedByApplicationUser = _context.Users.Single(c => c.)
+            };
+
+            var viewModel = new TicketCrudViewModel
+            {
+                Ticket = ticket,
+                Departments = _context.Departments.ToList()
+            };
+
+            return View("TicketForm", viewModel);
         }
 
         // GET: Ticket/Create
         public ActionResult Create()
         {
-            return View();
+            var ticket = new Ticket
+            {
+                CreatedDate = DateTime.Today,
+                CreatedByApplicationUser = _context.Users.Single(i => i.Id == User.Identity.GetUserId())
+            };
+
+            var viewModel = new TicketCrudViewModel
+            {
+                Ticket = ticket,
+                Departments = _context.Departments.ToList()
+            };
+
+            return View("TicketForm", viewModel);
         }
 
         // POST: Ticket/Create

@@ -28,6 +28,8 @@ namespace CodeBlue.Models
         [Display(Name = "Explain the Issue")]
         public string TicketSummary { get; set; }
 
+        [Required]
+        [Display(Name = "Priority of this Ticket")]
         public int TicketPriority { get; set; }
 
 
@@ -37,8 +39,9 @@ namespace CodeBlue.Models
             // Add Department
             // Ticket status
             // Add list<Comments>
-            
-                
+
+        [Required]
+        public Department Department { get; set; } 
 
         public ApplicationUser CreatedByApplicationUser { get; set; }
         public string CreatedByApplicationUserId { get; set; }

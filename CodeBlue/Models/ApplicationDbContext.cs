@@ -11,6 +11,7 @@ namespace CodeBlue.Models
     {
         //Add your new models here to have them migrated to the database
         public DbSet<ApplicationRoles> ApplicationRoles { get; set; }
+       
         public DbSet<Position> Positions { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<Department> Departments { get; set; }
