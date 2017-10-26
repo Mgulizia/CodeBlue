@@ -19,6 +19,7 @@
                 @Html.TextBoxFor(m => m.Ticket.CreatedDate, new { @class = "form-control", @value = Model.Ticket.CreatedDate.ToShortDateString() })
                 @Html.ValidationMessageFor(m => m.Ticket.CreatedDate);
             </div>
+            @Model.Ticket.CreatedByApplicationUser.FirstName
 
 
 

@@ -10,21 +10,38 @@ using CodeBlue.ViewModels.Ticket;
 using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace CodeBlue.Controllers
 {
     public class TicketController : Controller
     {
-        public ApplicationDbContext _context { get; set; }
-        public ApplicationUserManager _userManager { get; set; }
+        
+        private ApplicationUserManager _userManager;
+        private ApplicationDbContext _context;
 
         public TicketController()
         {
             _context = new ApplicationDbContext();
- 
         }
 
+        public TicketController(ApplicationUserManager userManager)
+        {
+            UserManager = userManager;
+            _context = new ApplicationDbContext();
+        }
 
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
 
 
         // GET: Ticket
@@ -38,19 +55,8 @@ namespace CodeBlue.Controllers
         {
 
 
-            var ticket = new Ticket
-            {
-                CreatedDate = DateTime.Today,
-                CreatedByApplicationUser = _context.Users.Single(c => c.)
-            };
 
-            var viewModel = new TicketCrudViewModel
-            {
-                Ticket = ticket,
-                Departments = _context.Departments.ToList()
-            };
-
-            return View("TicketForm", viewModel);
+            return View();
         }
 
         // GET: Ticket/Create
@@ -59,7 +65,7 @@ namespace CodeBlue.Controllers
             var ticket = new Ticket
             {
                 CreatedDate = DateTime.Today,
-                CreatedByApplicationUser = _context.Users.Single(i => i.Id == User.Identity.GetUserId())
+                CreatedByApplicationUser = UserManager.FindById(User.Identity.GetUserId())
             };
 
             var viewModel = new TicketCrudViewModel
@@ -71,21 +77,7 @@ namespace CodeBlue.Controllers
             return View("TicketForm", viewModel);
         }
 
-        // POST: Ticket/Create
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
+  
 
         // GET: Ticket/Edit/5
         public ActionResult Edit(int id)
