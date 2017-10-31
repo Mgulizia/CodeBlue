@@ -71,7 +71,7 @@ namespace CodeBlue.Controllers
             var viewModel = new TicketCrudViewModel
             {
                 Ticket = ticket,
-                Departments = _context.Departments.ToList()
+                Departments = _context.Departments.OrderBy(c => c.DepartmentName).ToList()
             };
 
             return View("TicketForm", viewModel);

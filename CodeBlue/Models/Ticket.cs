@@ -40,8 +40,11 @@ namespace CodeBlue.Models
             // Ticket status
             // Add list<Comments>
 
+       
+        public Department Department { get; set; }
         [Required]
-        public Department Department { get; set; } 
+        public int DepartmentId { get; set; }
+
 
         public ApplicationUser CreatedByApplicationUser { get; set; }
         public string CreatedByApplicationUserId { get; set; }

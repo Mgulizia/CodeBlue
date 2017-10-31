@@ -14,11 +14,25 @@
 
         <div class="panel-body">
             
+            @Html.HiddenFor(m => m.Ticket.CreatedByApplicationUser)
+            
+
             <div class="form-group">
                 @Html.LabelFor(m => m.Ticket.CreatedDate)
                 @Html.TextBoxFor(m => m.Ticket.CreatedDate, new { @class = "form-control", @value = Model.Ticket.CreatedDate.ToShortDateString() })
-                @Html.ValidationMessageFor(m => m.Ticket.CreatedDate);
+                @Html.ValidationMessageFor(m => m.Ticket.CreatedDate)
             </div>
+            
+            <div class="form-group">
+                @Html.LabelFor(m => m.Ticket.DepartmentId)
+                @Html.DropDownListFor(m => m.Ticket.DepartmentId, new SelectList(Model.Departments, "Id", "DepartmentName"), " -- Select Department --", new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Ticket.DepartmentId)
+            </div>
+            
+            
+            
+            
+
             @Model.Ticket.CreatedByApplicationUser.FirstName
 
 

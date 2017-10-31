@@ -18,6 +18,7 @@ namespace CodeBlue.Migrations.SeedData
             var roles = new Dictionary<string, string>();
             roles.Add("CanManageUsers", "Manage User Accounts");
             roles.Add("CanManagePositions", "Manage Support Postions");
+            roles.Add("CanManageTickets", "Can Manage and Assign Tickets");
             roles.Add("BasicUser", "Basic User Account");
 
             foreach (var role in roles)

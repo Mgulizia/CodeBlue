@@ -25,7 +25,10 @@ namespace CodeBlue.Migrations
             // Seed Admin Account
             SeedAccounts.Seed();
 
-            
+            // Seed Departments
+            SeedDepartments.Seed();
+
+
         }
     }
 }

@@ -223,8 +223,21 @@
     <Compile Include="Migrations\201710252147257_AddDepartmentToTicket.Designer.cs">
       <DependentUpon>201710252147257_AddDepartmentToTicket.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201710302357480_addDepartmentIdToTickets.cs" />
+    <Compile Include="Migrations\201710302357480_addDepartmentIdToTickets.Designer.cs">
+      <DependentUpon>201710302357480_addDepartmentIdToTickets.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710310019019_AddIsEnabledIntoDepartments.cs" />
+    <Compile Include="Migrations\201710310019019_AddIsEnabledIntoDepartments.Designer.cs">
+      <DependentUpon>201710310019019_AddIsEnabledIntoDepartments.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710310029099_MakeDepartmentRequiredForTickets.cs" />
+    <Compile Include="Migrations\201710310029099_MakeDepartmentRequiredForTickets.Designer.cs">
+      <DependentUpon>201710310029099_MakeDepartmentRequiredForTickets.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\SeedData\SeedAccounts.cs" />
+    <Compile Include="Migrations\SeedData\SeedDepartments.cs" />
     <Compile Include="Migrations\SeedData\SeedPositions.cs" />
     <Compile Include="Migrations\SeedData\SeedRoles.cs" />
     <Compile Include="Models\Department.cs" />
@@ -342,6 +355,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201710252147257_AddDepartmentToTicket.resx">
       <DependentUpon>201710252147257_AddDepartmentToTicket.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710302357480_addDepartmentIdToTickets.resx">
+      <DependentUpon>201710302357480_addDepartmentIdToTickets.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710310019019_AddIsEnabledIntoDepartments.resx">
+      <DependentUpon>201710310019019_AddIsEnabledIntoDepartments.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710310029099_MakeDepartmentRequiredForTickets.resx">
+      <DependentUpon>201710310029099_MakeDepartmentRequiredForTickets.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
