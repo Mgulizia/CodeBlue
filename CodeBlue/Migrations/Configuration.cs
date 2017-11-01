@@ -28,6 +28,9 @@ namespace CodeBlue.Migrations
             // Seed Departments
             SeedDepartments.Seed();
 
+            // Seed Ticket Statuses
+            SeedTicketStatuses.Seed();
+
 
         }
     }

@@ -47,17 +47,9 @@ namespace CodeBlue.Controllers
         // GET: Ticket
         public ActionResult Index()
         {
-            return View();
+            return View("Index");
         }
 
-        // GET: Ticket/Details/5
-        public ActionResult Details(int id)
-        {
-
-
-
-            return View();
-        }
 
         // GET: Ticket/Create
         public ActionResult Create()
@@ -65,7 +57,9 @@ namespace CodeBlue.Controllers
             var ticket = new Ticket
             {
                 CreatedDate = DateTime.Today,
-                CreatedByApplicationUser = UserManager.FindById(User.Identity.GetUserId())
+                CreatedByApplicationUser = UserManager.FindById(User.Identity.GetUserId()),
+                TicketPriority = 0,
+                TicketStatusId = TicketStatusNames.New
             };
 
             var viewModel = new TicketCrudViewModel
@@ -77,50 +71,38 @@ namespace CodeBlue.Controllers
             return View("TicketForm", viewModel);
         }
 
-  
-
-        // GET: Ticket/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Save(TicketCrudViewModel model)
         {
-            return View();
-        }
+            Ticket ticketInDb;
 
-        // POST: Ticket/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
+            if (model.Ticket.Id == 0)
             {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
+                ticketInDb = new Ticket();
+                _context.Tickets.Add(ticketInDb);
             }
-            catch
+            else
             {
-                return View();
+                ticketInDb = _context.Tickets.Single(c => c.Id == model.Ticket.Id);
             }
-        }
 
-        // GET: Ticket/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
 
-        // POST: Ticket/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
+
+            if (!ModelState.IsValid)
             {
-                // TODO: Add delete logic here
+                model.Departments = _context.Departments.ToList();
+                return View("TicketForm", model);
+            }
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            ticketInDb.CreatedDate = DateTime.Today;
+            ticketInDb.TicketSubject = model.Ticket.TicketSubject;
+            ticketInDb.CreatedByApplicationUserId = model.Ticket.CreatedByApplicationUserId;
+            ticketInDb.TicketSummary = model.Ticket.TicketSummary;
+            ticketInDb.TicketPriority = 0;
+            ticketInDb.TicketStatusId = TicketStatusNames.New;
+
+            _context.SaveChanges();
+
+            return RedirectToAction("Index");
         }
     }
 }

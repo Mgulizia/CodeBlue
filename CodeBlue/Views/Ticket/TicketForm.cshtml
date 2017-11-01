@@ -15,13 +15,9 @@
         <div class="panel-body">
             
             @Html.HiddenFor(m => m.Ticket.CreatedByApplicationUser)
-            
-
-            <div class="form-group">
-                @Html.LabelFor(m => m.Ticket.CreatedDate)
-                @Html.TextBoxFor(m => m.Ticket.CreatedDate, new { @class = "form-control", @value = Model.Ticket.CreatedDate.ToShortDateString() })
-                @Html.ValidationMessageFor(m => m.Ticket.CreatedDate)
-            </div>
+            @Html.HiddenFor(m => m.Ticket.CreatedByApplicationUser)
+            @Html.HiddenFor(m => m.Ticket.Id)
+            @Html.ValidationSummary()
             
             <div class="form-group">
                 @Html.LabelFor(m => m.Ticket.DepartmentId)
@@ -29,11 +25,18 @@
                 @Html.ValidationMessageFor(m => m.Ticket.DepartmentId)
             </div>
             
+            <div class="form-group">
+                @Html.LabelFor(m => m.Ticket.TicketSubject)
+                @Html.TextBoxFor(m => m.Ticket.TicketSubject, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Ticket.TicketSubject)
+            </div>
             
-            
-            
+            <div class="form-group">
+                @Html.LabelFor(m => m.Ticket.TicketSummary)
+                @Html.TextAreaFor(m => m.Ticket.TicketSummary, new { @class = "form-control", @rows = 10 })
+                @Html.ValidationMessageFor(m => m.Ticket.TicketSummary)
+            </div>
 
-            @Model.Ticket.CreatedByApplicationUser.FirstName
 
 
 
@@ -45,20 +48,7 @@
         </div>
     </div>
 
-    <script>
 
-        $(document).ready(function () {
-            $("#datepicker").datepicker({
-                showButtonPanel: true,
-                changeMonth: true,
-                changeYear: true,
-                showOtherMonths: true,
-                selectOtherMonths: true
-            });
-
-        })
-
-    </script>
 
 
 

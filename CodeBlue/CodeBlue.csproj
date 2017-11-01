@@ -235,15 +235,33 @@
     <Compile Include="Migrations\201710310029099_MakeDepartmentRequiredForTickets.Designer.cs">
       <DependentUpon>201710310029099_MakeDepartmentRequiredForTickets.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201711012047554_addTicketStatusesToDatabase.cs" />
+    <Compile Include="Migrations\201711012047554_addTicketStatusesToDatabase.Designer.cs">
+      <DependentUpon>201711012047554_addTicketStatusesToDatabase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711012144068_addTicketStatusToTicket.cs" />
+    <Compile Include="Migrations\201711012144068_addTicketStatusToTicket.Designer.cs">
+      <DependentUpon>201711012144068_addTicketStatusToTicket.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711012220502_makeTicketStatusAndTicketPriorityNonNullable.cs" />
+    <Compile Include="Migrations\201711012220502_makeTicketStatusAndTicketPriorityNonNullable.Designer.cs">
+      <DependentUpon>201711012220502_makeTicketStatusAndTicketPriorityNonNullable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711012221441_makeTicketStatusAndTicketPriorityNonNullable2.cs" />
+    <Compile Include="Migrations\201711012221441_makeTicketStatusAndTicketPriorityNonNullable2.Designer.cs">
+      <DependentUpon>201711012221441_makeTicketStatusAndTicketPriorityNonNullable2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\SeedData\SeedAccounts.cs" />
     <Compile Include="Migrations\SeedData\SeedDepartments.cs" />
     <Compile Include="Migrations\SeedData\SeedPositions.cs" />
+    <Compile Include="Migrations\SeedData\SeedTicketStatuses.cs" />
     <Compile Include="Migrations\SeedData\SeedRoles.cs" />
     <Compile Include="Models\Department.cs" />
     <Compile Include="Models\Helpers\PhoneHelper.cs" />
     <Compile Include="Models\Helpers\RoleHelper.cs" />
     <Compile Include="Models\Ticket.cs" />
+    <Compile Include="Models\TicketStatus.cs" />
     <Compile Include="ViewModels\Accounts\ApplicationUserAddViewModel.cs" />
     <Compile Include="ViewModels\Accounts\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -364,6 +382,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201710310029099_MakeDepartmentRequiredForTickets.resx">
       <DependentUpon>201710310029099_MakeDepartmentRequiredForTickets.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711012047554_addTicketStatusesToDatabase.resx">
+      <DependentUpon>201711012047554_addTicketStatusesToDatabase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711012144068_addTicketStatusToTicket.resx">
+      <DependentUpon>201711012144068_addTicketStatusToTicket.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711012220502_makeTicketStatusAndTicketPriorityNonNullable.resx">
+      <DependentUpon>201711012220502_makeTicketStatusAndTicketPriorityNonNullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711012221441_makeTicketStatusAndTicketPriorityNonNullable2.resx">
+      <DependentUpon>201711012221441_makeTicketStatusAndTicketPriorityNonNullable2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
