@@ -47,7 +47,17 @@ namespace CodeBlue.Controllers
         // GET: Ticket
         public ActionResult Index()
         {
-            return View("Index");
+
+            var viewModel = new TicketIndexViewModel()
+            {
+                Tickets = _context.Tickets
+                .Include(c => c.Department)
+                .Include(c => c.CreatedByApplicationUser)
+                .Where(c => c.TicketStatusId == TicketStatusNames.New)
+                .ToList()
+            };
+
+            return View("Index", viewModel);
         }
 
 
@@ -87,15 +97,12 @@ namespace CodeBlue.Controllers
 
 
 
-            if (!ModelState.IsValid)
-            {
-                model.Departments = _context.Departments.ToList();
-                return View("TicketForm", model);
-            }
+            var user = UserManager.FindById(User.Identity.GetUserId());
 
             ticketInDb.CreatedDate = DateTime.Today;
             ticketInDb.TicketSubject = model.Ticket.TicketSubject;
-            ticketInDb.CreatedByApplicationUserId = model.Ticket.CreatedByApplicationUserId;
+            ticketInDb.CreatedByApplicationUserId = user.Id;
+            ticketInDb.DepartmentId = model.Ticket.DepartmentId;
             ticketInDb.TicketSummary = model.Ticket.TicketSummary;
             ticketInDb.TicketPriority = 0;
             ticketInDb.TicketStatusId = TicketStatusNames.New;

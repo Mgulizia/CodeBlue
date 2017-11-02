@@ -1,4 +1,5 @@
-﻿@{
+﻿@model CodeBlue.ViewModels.Ticket.TicketIndexViewModel
+@{
     ViewBag.Title = "Ticket Manager";
 }
 
@@ -12,6 +13,29 @@
     </div>
     <div class="panel-body">
         
+        <table class="table table-responsive table-striped">
+            <tr>
+                <th>Ticket ID</th>
+                <th>Ticket Subject</th>
+                <th>Requesting Department</th>
+                <th>Requestor</th>
+            </tr>
+                @{
+                    foreach (var ticket in Model.Tickets)
+                    {
+                        <tr>
+                            <td>@ticket.Id</td>
+                            <td>@ticket.TicketSubject</td>
+                            <td>@ticket.Department.DepartmentName</td>
+                            <td>@ticket.CreatedByApplicationUser.FirstName @ticket.CreatedByApplicationUser.LastName</td>
+
+                        </tr>
+                    }
+                }
+            
+            
+
+        </table>
 
     </div>
 
