@@ -1,0 +1,109 @@
+﻿@model CodeBlue.ViewModels.Ticket.TicketDetailsViewModel
+@{
+    ViewBag.Title = "Ticket Details";
+}
+
+<h2>@ViewBag.Title</h2>
+<div class="panel panel-primary">
+    
+    <div class="panel-heading">
+        <h4>Ticket #@Model.Ticket.Id - @Model.Ticket.TicketSubject</h4>
+    </div>
+    
+    <div class="panel-body">
+        
+
+        <!--- FIRST ROW --->
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="well">
+                    <strong>Ticket Date:</strong> @Model.Ticket.CreatedDate.ToString("MM/dd/yyyy")
+                </div><!--- Well End --->
+            </div><!--- Column End --->
+
+            <div class="col-sm-4">
+                <div class="well">
+                    <strong>Requestor Department:</strong> @Model.Ticket.Department.DepartmentName
+                </div><!--- Well End --->
+            </div><!--- Column End --->
+            <div class="col-sm-4">
+                <div class="well">
+                    <strong>Primary Contact:</strong> <a href="mailto:@Model.Ticket.CreatedByApplicationUser.Email">
+                        @Model.Ticket.CreatedByApplicationUser.FirstName @Model.Ticket.CreatedByApplicationUser.LastName
+                    </a>
+                </div><!--- Well End --->
+            </div><!--- Column End --->
+        </div> <!--- Row End --->
+        
+        
+
+        <!--- SECOND ROW --->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="well">
+                    <strong>Ticket Summary:</strong> @Model.Ticket.TicketSummary
+                </div><!--- Well End --->
+            </div><!--- Column End --->
+        </div><!--- Row End --->
+        
+        
+
+        <!--- THIRD ROW --->
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="well">
+                    <strong>Technician Assigned:</strong> 
+                    @if (Model.Ticket.AssignedToApplicationUser != null)
+                    {
+                        <a href="mailto:@Model.Ticket.AssignedToApplicationUser.Email">
+                            @Model.Ticket.AssignedToApplicationUser.FirstName @Model.Ticket.AssignedToApplicationUser.LastName
+                        </a>
+                    }
+                    else
+                    {
+                    <a href="@Url.Action("Take","Ticket", new {ticketId = Model.Ticket.Id})" class="btn btn-sm btn-primary">Not Assigned - Take Ticket</a>
+                    }
+
+</div><!--- Well End --->
+            </div><!--- Column End --->
+
+            <div class="col-sm-4">
+                <div class="well">
+                    <strong>Ticket Status:</strong> @Html.Raw(@Model.Ticket.TicketStatus.StatusLabel())
+                </div><!--- Well End --->
+            </div><!--- Column End --->
+            <div class="col-sm-4">
+                <div class="well">
+                    <strong>Ticket Closed On:</strong> 
+                @if (Model.Ticket.ClosedByApplicationUser != null)
+                {
+                    @Model.Ticket.CompletedDate
+                    <a href="mailto:@Model.Ticket.ClosedByApplicationUser.Email">@Model.Ticket.ClosedByApplicationUser.FirstName @Model.Ticket.ClosedByApplicationUser.LastName</a>
+                }
+                else
+                {
+                   <span> -- Ticket not closed --</span>
+                }
+                   
+                </div><!--- Well End --->
+            </div><!--- Column End --->
+        </div> <!--- Row End --->
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+    </div>
+
+</div>
+

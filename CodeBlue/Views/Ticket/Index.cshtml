@@ -1,6 +1,8 @@
-﻿@model CodeBlue.ViewModels.Ticket.TicketIndexViewModel
+﻿@using Microsoft.AspNet.Identity
+@model CodeBlue.ViewModels.Ticket.TicketIndexViewModel
 @{
     ViewBag.Title = "Ticket Manager";
+    var user = System.Web.HttpContext.Current.User.Identity;
 }
 
 <h2>@ViewBag.Title</h2>
@@ -19,6 +21,7 @@
                 <th>Ticket Subject</th>
                 <th>Requesting Department</th>
                 <th>Requestor</th>
+                <th>Commands</th>
             </tr>
                 @{
                     foreach (var ticket in Model.Tickets)
@@ -28,7 +31,14 @@
                             <td>@ticket.TicketSubject</td>
                             <td>@ticket.Department.DepartmentName</td>
                             <td>@ticket.CreatedByApplicationUser.FirstName @ticket.CreatedByApplicationUser.LastName</td>
-
+                            <td>
+                                <a href="@Url.Action("Manage", "Ticket")" class="btn btn-sm btn-primary"><span class='glyphicon glyphicon-pencil'></span> Edit</a>
+                                <a href="@Url.Action("View", "Ticket", new { ticketId = ticket.Id } )" class="btn btn-sm btn-primary"><span class='glyphicon glyphicon-info-sign '></span> View</a>
+                                @if (ticket.CreatedByApplicationUserId == user.GetUserId() || User.IsInRole("CanManageTickets"))
+                                {
+                                    <a href="@Url.Action("Close", "Ticket")" class="btn btn-sm btn-primary"><span class='glyphicon glyphicon-remove-circle'></span> Close</a>
+                                }
+                            </td>
                         </tr>
                     }
                 }

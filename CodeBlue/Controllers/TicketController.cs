@@ -44,21 +44,64 @@ namespace CodeBlue.Controllers
         }
 
 
+
+
+
+
         // GET: Ticket
         public ActionResult Index()
         {
+            var viewModel = new TicketIndexViewModel();
 
-            var viewModel = new TicketIndexViewModel()
+            if (User.IsInRole("CanManageTickets") || User.IsInRole("CanTakeTickets"))
             {
-                Tickets = _context.Tickets
-                .Include(c => c.Department)
-                .Include(c => c.CreatedByApplicationUser)
-                .Where(c => c.TicketStatusId == TicketStatusNames.New)
-                .ToList()
-            };
+                if (User.IsInRole("CanManageTickets"))
+                {
+                    viewModel.Tickets = _context.Tickets
+                        .Include(c => c.Department)
+                        .Include(c => c.CreatedByApplicationUser)
+                        .ToList();
+                }
+                else
+                {
+                    viewModel.Tickets = _context.Tickets
+                        .Include(c => c.Department)
+                        .Include(c => c.CreatedByApplicationUser)
+                        .Where(c=>c.TicketStatusId == TicketStatusNames.New)
+                        .ToList();
+                }
+            }
+            else
+            {
+                var currentUser = UserManager.FindById(User.Identity.GetUserId());
+                viewModel.Tickets = _context.Tickets
+                    .Include(c => c.Department)
+                    .Include(c => c.CreatedByApplicationUser)
+                    .Where(c => c.CreatedByApplicationUserId == currentUser.Id)
+                    .ToList();
+            }
 
             return View("Index", viewModel);
         }
+
+        //GET: Ticket/View/{ticketId]
+        public ActionResult View(int ticketId)
+        {
+            var ticket = _context.Tickets
+                .Include(c => c.Department)
+                .Include(c => c.CreatedByApplicationUser)
+                .Include(c => c.TicketStatus)
+                .Single(c => c.Id == ticketId);
+            var viewModel = new TicketDetailsViewModel {Ticket = ticket};
+
+            return View("Details", viewModel);
+        }
+
+
+
+
+
+
 
 
         // GET: Ticket/Create

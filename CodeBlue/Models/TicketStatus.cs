@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Data.Entity.Core.Common.EntitySql;
 using System.Linq;
 using System.Web;
 
@@ -12,6 +13,24 @@ namespace CodeBlue.Models
 
         [Required]
         public string StatusDescription { get; set; }
+
+        public string StatusLabel()
+        {
+            switch (this.Id)
+            {
+                
+               case 1: return  "<span style='font-size: 120%' class='label label-danger'>New</span>";
+               case 2: return  "<span style='font-size: 120%' class='label label-default'>Closed : Per Requestor</span>";
+               case 3: return  "<span style='font-size: 120%' class='label label-success'>Assigned to Technician</span>";
+               case 4: return  "<span style='font-size: 120%' class='label label-warning'>EscalatedBySupervisor</span>";
+               case 5: return  "<span style='font-size: 120%' class='label label-info'>Set For Follow Up</span>";
+               case 6: return  "<span style='font-size: 120%' class='label label-default'>Closed : Completed</span>";
+               case 7: return  "<span style='font-size: 120%' class='label label-default'>Closed : Not Completed</span>";
+               case 8: return  "<span style='font-size: 120%' class='label label-default'>Closed : Non Compliance</span>";
+               default: return "<span style='font-size: 120%' class='label label-danger'>NO STATUS CODE!</span>";
+                    
+            }
+        }
 
     }
 
