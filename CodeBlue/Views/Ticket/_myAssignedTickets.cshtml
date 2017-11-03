@@ -1,0 +1,36 @@
+﻿<div id="myAssignedTickets" class="tab-pane fade in">
+    <h4>My Assigned Tickets</h4>
+
+    @if (Model.MyAssignedTickets.Count > 0)
+    {
+        <table class="table table-responsive table-striped">
+            <tr>
+                <th>Ticket ID</th>
+                <th>Ticket Subject</th>
+                <th>Requesting Department</th>
+                <th>Requestor</th>
+                <th>Commands</th>
+            </tr>
+            @{
+                foreach (var ticket in Model.MyAssignedTickets)
+                {
+                    <tr>
+                        <td>@ticket.Id</td>
+                        <td>@ticket.TicketSubject</td>
+                        <td>@ticket.Department.DepartmentName</td>
+                        <td>@ticket.CreatedByApplicationUser.FirstName @ticket.CreatedByApplicationUser.LastName</td>
+                        <td>
+                            <a href="@Url.Action("Manage", "Ticket")" class="btn btn-sm btn-primary"><span class='glyphicon glyphicon-pencil'></span> Edit</a>
+                            <a href="@Url.Action("View", "Ticket", new { ticketId = ticket.Id } )" class="btn btn-sm btn-primary"><span class='glyphicon glyphicon-info-sign '></span> View</a>
+                        </td>
+                    </tr>
+                }
+            }
+        </table>
+                }
+                else
+                {
+                    <p>You dont have any assigned tickets... GET TO WORK!</p>
+                }
+
+</div><!--- End of Assigned Tickets Tab --->

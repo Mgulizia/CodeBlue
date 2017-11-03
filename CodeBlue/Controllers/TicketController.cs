@@ -51,35 +51,59 @@ namespace CodeBlue.Controllers
         // GET: Ticket
         public ActionResult Index()
         {
-            var viewModel = new TicketIndexViewModel();
+            var currentUser = UserManager.FindById(User.Identity.GetUserId());
 
-            if (User.IsInRole("CanManageTickets") || User.IsInRole("CanTakeTickets"))
+            var myTickets = _context.Tickets
+                .Include(c => c.Department)
+                .Include(c => c.CreatedByApplicationUser)
+                .Where(c=>c.CreatedByApplicationUserId == currentUser.Id)
+                .ToList();
+
+            var availableTickets = _context.Tickets
+                .Include(c => c.Department)
+                .Include(c => c.CreatedByApplicationUser)
+                .Where(c=>c.TicketStatusId == TicketStatusNames.New)
+                .ToList();
+
+            var myAssignedTickets = _context.Tickets
+                .Include(c => c.Department)
+                .Include(c => c.CreatedByApplicationUser)
+                .Where(c=>c.AssignedToApplicationUserId == currentUser.Id)
+                .ToList();
+
+            var closedTickets = new List<Ticket>();
+
+            if (User.IsInRole("canManageTickets"))
             {
-                if (User.IsInRole("CanManageTickets"))
-                {
-                    viewModel.Tickets = _context.Tickets
-                        .Include(c => c.Department)
-                        .Include(c => c.CreatedByApplicationUser)
-                        .ToList();
-                }
-                else
-                {
-                    viewModel.Tickets = _context.Tickets
-                        .Include(c => c.Department)
-                        .Include(c => c.CreatedByApplicationUser)
-                        .Where(c=>c.TicketStatusId == TicketStatusNames.New)
-                        .ToList();
-                }
+                closedTickets = _context.Tickets
+                .Include(c => c.Department)
+                .Include(c => c.CreatedByApplicationUser)
+                .Where(c=>c.TicketStatusId == TicketStatusNames.ClosedByRequestor ||
+                c.TicketStatusId == TicketStatusNames.ClosedCompleted ||
+                c. TicketStatusId == TicketStatusNames.ClosedNonCompliance ||
+                c. TicketStatusId == TicketStatusNames.ClosedNotCompleted)
+                .ToList();
             }
             else
             {
-                var currentUser = UserManager.FindById(User.Identity.GetUserId());
-                viewModel.Tickets = _context.Tickets
+                closedTickets = _context.Tickets
                     .Include(c => c.Department)
                     .Include(c => c.CreatedByApplicationUser)
-                    .Where(c => c.CreatedByApplicationUserId == currentUser.Id)
+                    .Where(c => c.TicketStatusId == TicketStatusNames.ClosedByRequestor ||
+                                c.TicketStatusId == TicketStatusNames.ClosedCompleted ||
+                                c.TicketStatusId == TicketStatusNames.ClosedNonCompliance ||
+                                c.TicketStatusId == TicketStatusNames.ClosedNotCompleted &&
+                                c.CreatedByApplicationUserId == currentUser.Id)
                     .ToList();
             }
+
+            var viewModel = new TicketIndexViewModel()
+            {
+                MyTickets = myTickets,
+                AvailableTickets = availableTickets,
+                MyAssignedTickets = myAssignedTickets,
+                ClosedTickets = closedTickets
+            };
 
             return View("Index", viewModel);
         }
@@ -98,6 +122,21 @@ namespace CodeBlue.Controllers
         }
 
 
+        //GET: Ticket/Take/{ticketId]
+        public ActionResult Take(int ticketId)
+        {
+            var ticket = _context.Tickets.Single(c => c.Id == ticketId);
+            var currentUser = UserManager.FindById(User.Identity.GetUserId());
+
+            ticket.AssignedToApplicationUserId = currentUser.Id;
+            ticket.TicketStatusId = TicketStatusNames.AssignedToTechnician;
+
+            _context.SaveChanges();
+
+
+
+            return RedirectToAction("Index", "Ticket");
+        }
 
 
 

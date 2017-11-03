@@ -5,47 +5,182 @@
     var user = System.Web.HttpContext.Current.User.Identity;
 }
 
-<h2>@ViewBag.Title</h2>
-
-@Html.ActionLink("Create a Ticket", "Create")
+<br/>
 
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h4>Available Tickets</h4>
+        <h2>Ticket Manager</h2>
     </div>
     <div class="panel-body">
         
-        <table class="table table-responsive table-striped">
-            <tr>
-                <th>Ticket ID</th>
-                <th>Ticket Subject</th>
-                <th>Requesting Department</th>
-                <th>Requestor</th>
-                <th>Commands</th>
-            </tr>
-                @{
-                    foreach (var ticket in Model.Tickets)
-                    {
-                        <tr>
-                            <td>@ticket.Id</td>
-                            <td>@ticket.TicketSubject</td>
-                            <td>@ticket.Department.DepartmentName</td>
-                            <td>@ticket.CreatedByApplicationUser.FirstName @ticket.CreatedByApplicationUser.LastName</td>
-                            <td>
-                                <a href="@Url.Action("Manage", "Ticket")" class="btn btn-sm btn-primary"><span class='glyphicon glyphicon-pencil'></span> Edit</a>
-                                <a href="@Url.Action("View", "Ticket", new { ticketId = ticket.Id } )" class="btn btn-sm btn-primary"><span class='glyphicon glyphicon-info-sign '></span> View</a>
-                                @if (ticket.CreatedByApplicationUserId == user.GetUserId() || User.IsInRole("CanManageTickets"))
-                                {
-                                    <a href="@Url.Action("Close", "Ticket")" class="btn btn-sm btn-primary"><span class='glyphicon glyphicon-remove-circle'></span> Close</a>
-                                }
-                            </td>
-                        </tr>
-                    }
-                }
+        <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#myTickets">My Tickets</a></li>
+            @if (User.IsInRole("CanManageTickets") || User.IsInRole("CanTakeTickets"))
+            {
+                <li><a data-toggle="tab" href="#availableTickets">Available Tickets</a></li>
+                <li><a data-toggle="tab" href="#myAssignedTickets">My Assigned Tickets</a></li>
+            }
             
+            <li><a data-toggle="tab" href="#closedTickets">Closed Tickets</a></li>
+        </ul>
+        
+        <div class="tab-content">
+            
+            <div id="myTickets" class="tab-pane fade in active">
+                <h4>
+                    <a href="@Url.Action("Create", "Ticket")" class="btn btn-primary pull-right">Create a Ticket</a>
+                    My Tickets
+                </h4>
+                <br/>
+
+
+                @if (Model.MyTickets.Count > 0)
+                {
+                    <table class="table table-responsive table-striped">
+                        <tr>
+                            <th>Ticket ID</th>
+                            <th>Ticket Subject</th>
+                            <th>Requesting Department</th>
+                            <th>Requestor</th>
+                            <th>Commands</th>
+                        </tr>
+                        @{
+                            foreach (var ticket in Model.MyTickets)
+                            {
+                                <tr>
+                                    <td>@ticket.Id</td>
+                                    <td>@ticket.TicketSubject</td>
+                                    <td>@ticket.Department.DepartmentName</td>
+                                    <td>@ticket.CreatedByApplicationUser.FirstName @ticket.CreatedByApplicationUser.LastName</td>
+                                    <td>
+                                        <a href="@Url.Action("Manage", "Ticket")" class="btn btn-sm btn-primary"><span class='glyphicon glyphicon-pencil'></span> Edit</a>
+                                        <a href="@Url.Action("View", "Ticket", new {ticketId = ticket.Id})" class="btn btn-sm btn-primary"><span class='glyphicon glyphicon-info-sign '></span> View</a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </table>
+                }
+                else
+                {
+                    <p>You dont have any issues? @Html.ActionLink("Create a ticket", "Create") if you need assistance!</p>
+                }
+
+            </div><!--- End of My Tickets Tab --->
             
 
-        </table>
+      
+            @if (User.IsInRole("CanManageTickets") || User.IsInRole("CanTakeTickets"))
+            {
+                @Html.Partial("_availableTickets")
+                @Html.Partial("_myAssignedTickets")
+            }
+
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <div id="closedTickets" class="tab-pane fade in">
+                <h4>My Assigned Tickets</h4>
+
+                @if (Model.ClosedTickets.Count > 0)
+                {
+                    <table class="table table-responsive table-striped">
+                        <tr>
+                            <th>Ticket ID</th>
+                            <th>Ticket Subject</th>
+                            <th>Requesting Department</th>
+                            <th>Requestor</th>
+                            <th>Commands</th>
+                        </tr>
+                        @{
+                            foreach (var ticket in Model.ClosedTickets)
+                            {
+                                <tr>
+                                    <td>@ticket.Id</td>
+                                    <td>@ticket.TicketSubject</td>
+                                    <td>@ticket.Department.DepartmentName</td>
+                                    <td>@ticket.CreatedByApplicationUser.FirstName @ticket.CreatedByApplicationUser.LastName</td>
+                                    <td>
+                                        <a href="@Url.Action("Manage", "Ticket")" class="btn btn-sm btn-primary"><span class='glyphicon glyphicon-pencil'></span> Edit</a>
+                                        <a href="@Url.Action("View", "Ticket", new { ticketId = ticket.Id } )" class="btn btn-sm btn-primary"><span class='glyphicon glyphicon-info-sign '></span> View</a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </table>
+                            }
+                            else
+                            {
+                                <p>You havent finished a ticket yet... Are you new?</p>
+                            }
+
+            </div><!--- End of Closed Tickets Tab --->
+            
+
+        </div><!--- Tab Contents --->
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+    
+        
+
+        
 
     </div>
 

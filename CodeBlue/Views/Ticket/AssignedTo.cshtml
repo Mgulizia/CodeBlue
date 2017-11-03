@@ -1,0 +1,56 @@
+﻿@using Microsoft.AspNet.Identity
+@model CodeBlue.ViewModels.Ticket.TicketIndexViewModel
+@{
+    ViewBag.Title = "Ticket Manager";
+    var user = System.Web.HttpContext.Current.User.Identity;
+}
+
+<h2>@ViewBag.Title</h2>
+
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4>Tickets Assigned To Me</h4>
+    </div>
+    <div class="panel-body">
+        
+        @if (Model.Tickets != null)
+        {
+            <table class="table table-responsive table-striped">
+                <tr>
+                    <th>Ticket ID</th>
+                    <th>Ticket Subject</th>
+                    <th>Requesting Department</th>
+                    <th>Requestor</th>
+                    <th>Commands</th>
+                </tr>
+                @{
+                    foreach (var ticket in Model.Tickets)
+                    {
+                        <tr>
+                            <td>@ticket.Id</td>
+                            <td>@ticket.TicketSubject</td>
+                            <td>@ticket.Department.DepartmentName</td>
+                            <td>@ticket.CreatedByApplicationUser.FirstName @ticket.CreatedByApplicationUser.LastName</td>
+                            <td>
+                                <a href="@Url.Action("Manage", "Ticket")" class="btn btn-sm btn-primary"><span class='glyphicon glyphicon-pencil'></span> Edit</a>
+                                <a href="@Url.Action("View", "Ticket", new {ticketId = ticket.Id})" class="btn btn-sm btn-primary"><span class='glyphicon glyphicon-info-sign '></span> View</a>
+                            </td>
+                        </tr>
+                    }
+                }
+
+
+
+            </table>
+        }
+        else
+        {
+            <p>You currently dont have any tickets to work on.  GET WORKING!</p>
+        }
+
+
+
+    </div>
+
+</div>
