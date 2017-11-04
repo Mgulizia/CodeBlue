@@ -123,14 +123,23 @@ namespace CodeBlue.Controllers
 
             var ticketcomments = _context.Comments
                 .Include(c => c.PostedBy)
-                .Where(c => c.RelatedTicketId == ticketId)
+                .Where(c => c.RelatedTicketId == ticketId && c.IsEnabled == true)
                 .OrderBy(c=>c.PostedOn)
                 .ToList();
+
+            var technicians = _context.Users
+                .Include(c=>c.Position)
+                .Where(c => c.IsEnabled == true && c.PositionId < 6)
+                .ToList();
+
+            List<TicketStatus> ticketStatuses = _context.TicketStatuses.ToList();
 
             var viewModel = new TicketDetailsViewModel
             {
                 Ticket = ticket,
-                Comments = ticketcomments
+                Comments = ticketcomments,
+                Technicians = technicians,
+                TicketStatuses = ticketStatuses
             };
 
             return View("Details", viewModel);
@@ -153,13 +162,14 @@ namespace CodeBlue.Controllers
             return RedirectToAction("Index", "Ticket");
         }
 
-
+        // GET: Ticket/UpdateStatus
         public ActionResult UpdateStatus(TicketDetailsViewModel model)
         {
             if (model.TicketStatus != 99)
             {
                 var ticketInDb = _context.Tickets.Single(c => c.Id == model.Ticket.Id);
                 ticketInDb.TicketStatusId = model.TicketStatus;
+                ticketInDb.CompletedDate = DateTime.Now;
                 _context.SaveChanges();
             }
             
@@ -167,9 +177,59 @@ namespace CodeBlue.Controllers
             return RedirectToAction("Index", "Ticket");
         }
 
+        // GET: Ticket/UpdateTechnician
+        public ActionResult UpdateTecnician(TicketDetailsViewModel model)
+        {
+            
+            var ticketInDb = _context.Tickets.Single(c => c.Id == model.Ticket.Id);
+            ticketInDb.AssignedToApplicationUserId = model.Ticket.AssignedToApplicationUserId;
+            _context.SaveChanges();
+
+            return RedirectToAction("View", "Ticket", new{ticketId = model.Ticket.Id});
+        }
 
 
 
+        // GET: Ticket/EscalateTicket
+        public ActionResult EscalateTicket(TicketDetailsViewModel model)
+        {
+            
+            var ticketInDb = _context.Tickets.Single(c => c.Id == model.Ticket.Id);
+            ticketInDb.TicketStatusId = TicketStatusNames.EscalatedBySupervisor;
+            _context.SaveChanges();
+
+            return RedirectToAction("View", "Ticket", new{ticketId = model.Ticket.Id});
+        }
+
+
+        // GET: Ticket/OverrideTicketStatus
+        public ActionResult OverrideTicketStatus(TicketDetailsViewModel model)
+        {
+
+            var ticketInDb = _context.Tickets.Single(c => c.Id == model.Ticket.Id);
+            ticketInDb.TicketStatusId = model.Ticket.TicketStatusId;
+
+            switch (model.Ticket.TicketStatusId)
+            {
+                case 1:
+                    if (ticketInDb.AssignedToApplicationUserId != "")ticketInDb.AssignedToApplicationUserId = "";
+                    if (model.Ticket.CompletedDate != null)ticketInDb.CompletedDate = null;
+                    break;
+                case 2:
+                case 6:
+                case 7:
+                case 8:
+                    ticketInDb.CompletedDate = DateTime.Now;
+                    break;
+                case 3:
+                case 5:
+                    if (model.Ticket.CompletedDate != null) ticketInDb.CompletedDate = null;
+                    break;
+            }
+            _context.SaveChanges();
+
+            return RedirectToAction("View", "Ticket", new { ticketId = model.Ticket.Id });
+        }
 
 
         // GET: Ticket/Create
@@ -235,15 +295,24 @@ namespace CodeBlue.Controllers
             commentInDb.PostedOn = DateTime.Now;
             commentInDb.RelatedTicketId = model.NewComment.RelatedTicketId;
             commentInDb.Comment = model.NewComment.Comment;
+            commentInDb.IsEnabled = true;
         
             _context.SaveChanges();
         
             return RedirectToAction("View", new { ticketId = model.NewComment.RelatedTicketId});
         }
 
+        public ActionResult RemoveComments(TicketDetailsViewModel model)
+        {
+            var commentInDb = _context.Comments.Single(c => c.Id == model.NewComment.Id);
+            if (commentInDb.IsEnabled)
+                commentInDb.IsEnabled = false;
+
+            _context.SaveChanges();
 
 
-
-
+            return RedirectToAction("View", new { ticketId = model.NewComment.RelatedTicketId});
+        }
+        
     }
 }

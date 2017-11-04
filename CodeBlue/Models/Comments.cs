@@ -17,7 +17,7 @@ namespace CodeBlue.Models
         public Ticket RelatedTicket { get; set; }
         public int RelatedTicketId { get; set; }
 
-
+        public bool IsEnabled { get; set; }
 
 
     }

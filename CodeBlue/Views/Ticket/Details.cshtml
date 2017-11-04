@@ -78,7 +78,60 @@
                                 </div>
                             }
                         }
-                        
+                        @if (User.IsInRole("CanManageTickets"))
+                        {
+                            using (Html.BeginForm("UpdateTecnician", "Ticket"))
+                            {
+                                <div class="col-md-3">
+                                    <strong>Reassign Ticket</strong>
+                                    @Html.HiddenFor(c => c.Ticket.Id, new { Value = Model.Ticket.Id })
+                                    @Html.DropDownListFor(c => c.Ticket.AssignedToApplicationUserId, Model.Technicians.Select(p => new SelectListItem{Value = p.Id, Text = p.LastName + " - " + p.Position.TitleDescription}), new { @class = "form-control" })
+                                    <br /><button type="submit" class="btn btn-primary">Re-Assign Ticket</button>
+                                </div>
+                            }
+                       
+                            using (Html.BeginForm("EscalateTicket", "Ticket"))
+                            {
+                                <div class="col-md-3">
+                                    <strong>Escalate Ticket</strong>
+                                    @Html.HiddenFor(c => c.Ticket.Id, new {Value = Model.Ticket.Id})
+                                    <br/><br /><button type="submit" class="btn btn-warning">Escalate Ticket</button>
+                                </div>
+                            }
+
+                            using (Html.BeginForm("OverrideTicketStatus", "Ticket"))
+                            {
+                                <div class="col-md-3">
+                                    <strong>Override Ticket Status</strong>
+                                    @Html.HiddenFor(c => c.Ticket.Id, new { Value = Model.Ticket.Id })
+                                    @Html.DropDownListFor(c => c.Ticket.TicketStatusId, Model.TicketStatuses.Select(p => new SelectListItem{Value = p.Id.ToString(), Text = p.StatusDescription}), new { @class = "form-control" })
+                                    <br /><button type="submit" class="btn btn-primary">Override Status</button>
+                                </div>
+                            }
+
+
+
+
+                        }
+                        else
+                        {
+                            if (Model.Ticket.CreatedByApplicationUser.Id == User.Identity.GetUserId() && User.IsInRole("BasicUser") &&
+                                Model.Ticket.CreatedDate < DateTime.Now.AddDays(-5))
+                            {
+                                using (Html.BeginForm("EscalateTicket", "Ticket"))
+                                {
+                                    <div class="col-md-3">
+                                        <strong>Escalate Ticket</strong>
+                                        @Html.HiddenFor(c => c.Ticket.Id, new {Value = Model.Ticket.Id})
+                                        <br/><br /><button type="submit" class="btn btn-warning">Escalate Ticket</button>
+                                    </div>
+                                }
+                            }
+                        }
+
+
+
+
                     </div>
 
                 </div><!--- Well End --->
@@ -116,7 +169,8 @@
                     <strong>Ticket Closed On:</strong> 
                 @if (Model.Ticket.ClosedByApplicationUser != null)
                 {
-                    @Model.Ticket.CompletedDate
+                    <p>The Date isn't working... its stupid.</p>
+                    
                     <a href="mailto:@Model.Ticket.ClosedByApplicationUser.Email">@Model.Ticket.ClosedByApplicationUser.FirstName @Model.Ticket.ClosedByApplicationUser.LastName</a>
                 }
                 else
@@ -176,6 +230,17 @@
                                 <div class="col-md-12">
                                     <strong>Comment:</strong><br/>
                                     @comment.Comment
+                                    <hr />
+                                    @if (User.IsInRole("CanManageTickets"))
+                                    {
+                                        using (Html.BeginForm("RemoveComments", "Ticket"))
+                                        {
+                                            @Html.HiddenFor(c => c.NewComment.Id, new { id = "CommentId", Value = comment.Id })
+                                            @Html.HiddenFor(c => c.NewComment.RelatedTicketId, new { id = "RelatedTicketId", Value = comment.RelatedTicketId })
+                                            <button type="submit" class="btn btn-danger btn-xs">Delete Comment</button>
+                                        }
+                                    }
+                                    
                                 </div>
                             </div>
                         </div>

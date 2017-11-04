@@ -13,5 +13,8 @@ namespace CodeBlue.ViewModels.Ticket
         public List<Comments> Comments { get; set; }
         public Comments NewComment { get; set; }
         public int? TicketStatus { get; set; }
+        public List<ApplicationUser> Technicians { get; set; }
+        public List<TicketStatus> TicketStatuses { get; set; }
+
     }
 }

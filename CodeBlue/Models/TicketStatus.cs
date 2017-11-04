@@ -22,7 +22,7 @@ namespace CodeBlue.Models
                case 1: return  "<span style='font-size: 120%' class='label label-danger'>New</span>";
                case 2: return  "<span style='font-size: 120%' class='label label-default'>Closed : Per Requestor</span>";
                case 3: return  "<span style='font-size: 120%' class='label label-success'>Assigned to Technician</span>";
-               case 4: return  "<span style='font-size: 120%' class='label label-warning'>EscalatedBySupervisor</span>";
+               case 4: return  "<span style='font-size: 120%' class='label label-warning'>Escalated</span>";
                case 5: return  "<span style='font-size: 120%' class='label label-info'>Set For Follow Up</span>";
                case 6: return  "<span style='font-size: 120%' class='label label-default'>Closed : Completed</span>";
                case 7: return  "<span style='font-size: 120%' class='label label-default'>Closed : Not Completed</span>";
