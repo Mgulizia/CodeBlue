@@ -54,7 +54,7 @@ namespace CodeBlue.Models
 
         public ApplicationUser ClosedByApplicationUser { get; set; }
         public string ClosedByApplicationUserId { get; set; }
-
+        
     }
 
 

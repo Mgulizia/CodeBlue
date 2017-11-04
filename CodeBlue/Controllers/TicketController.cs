@@ -56,6 +56,7 @@ namespace CodeBlue.Controllers
             var myTickets = _context.Tickets
                 .Include(c => c.Department)
                 .Include(c => c.CreatedByApplicationUser)
+                .Include(c=>c.TicketStatus)
                 .Where(c=>c.CreatedByApplicationUserId == currentUser.Id)
                 .ToList();
 
@@ -68,7 +69,7 @@ namespace CodeBlue.Controllers
             var myAssignedTickets = _context.Tickets
                 .Include(c => c.Department)
                 .Include(c => c.CreatedByApplicationUser)
-                .Where(c=>c.AssignedToApplicationUserId == currentUser.Id)
+                .Where(c=>c.AssignedToApplicationUserId == currentUser.Id && c.TicketStatusId != 2 && c.TicketStatusId < 6)
                 .ToList();
 
             var closedTickets = new List<Ticket>();
@@ -108,15 +109,29 @@ namespace CodeBlue.Controllers
             return View("Index", viewModel);
         }
 
+
+
         //GET: Ticket/View/{ticketId]
         public ActionResult View(int ticketId)
         {
             var ticket = _context.Tickets
                 .Include(c => c.Department)
                 .Include(c => c.CreatedByApplicationUser)
+                .Include(c => c.AssignedToApplicationUser)
                 .Include(c => c.TicketStatus)
                 .Single(c => c.Id == ticketId);
-            var viewModel = new TicketDetailsViewModel {Ticket = ticket};
+
+            var ticketcomments = _context.Comments
+                .Include(c => c.PostedBy)
+                .Where(c => c.RelatedTicketId == ticketId)
+                .OrderBy(c=>c.PostedOn)
+                .ToList();
+
+            var viewModel = new TicketDetailsViewModel
+            {
+                Ticket = ticket,
+                Comments = ticketcomments
+            };
 
             return View("Details", viewModel);
         }
@@ -134,6 +149,20 @@ namespace CodeBlue.Controllers
             _context.SaveChanges();
 
 
+
+            return RedirectToAction("Index", "Ticket");
+        }
+
+
+        public ActionResult UpdateStatus(TicketDetailsViewModel model)
+        {
+            if (model.TicketStatus != 99)
+            {
+                var ticketInDb = _context.Tickets.Single(c => c.Id == model.Ticket.Id);
+                ticketInDb.TicketStatusId = model.TicketStatus;
+                _context.SaveChanges();
+            }
+            
 
             return RedirectToAction("Index", "Ticket");
         }
@@ -193,5 +222,28 @@ namespace CodeBlue.Controllers
 
             return RedirectToAction("Index");
         }
+
+
+
+        public ActionResult AddComments(TicketDetailsViewModel model)
+        {
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            var commentInDb = new Comments();
+            _context.Comments.Add(commentInDb);
+        
+            commentInDb.PostedById = user.Id;
+            commentInDb.PostedOn = DateTime.Now;
+            commentInDb.RelatedTicketId = model.NewComment.RelatedTicketId;
+            commentInDb.Comment = model.NewComment.Comment;
+        
+            _context.SaveChanges();
+        
+            return RedirectToAction("View", new { ticketId = model.NewComment.RelatedTicketId});
+        }
+
+
+
+
+
     }
 }

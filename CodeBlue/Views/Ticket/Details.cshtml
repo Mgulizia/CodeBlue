@@ -1,4 +1,5 @@
-﻿@model CodeBlue.ViewModels.Ticket.TicketDetailsViewModel
+﻿@using Microsoft.AspNet.Identity
+@model CodeBlue.ViewModels.Ticket.TicketDetailsViewModel
 @{
     ViewBag.Title = "Ticket Details";
 }
@@ -35,13 +36,51 @@
             </div><!--- Column End --->
         </div> <!--- Row End --->
         
+        @{
+            var selectList = new List<SelectListItem>
+            {
+                new SelectListItem {Text = "-- No Change --", Value = "99"},
+                new SelectListItem {Text = "Closed: By Requestor", Value = "2"},
+                new SelectListItem {Text = "Closed: Completed", Value = "6"},
+                new SelectListItem {Text = "Closed: No Completed", Value = "7"},
+                new SelectListItem {Text = "Closed: Non Compliance", Value = "8"}
+            };
+        }
         
+        
+        
+        
+        
+
 
         <!--- SECOND ROW --->
         <div class="row">
             <div class="col-sm-12">
                 <div class="well">
-                    <strong>Ticket Summary:</strong> @Model.Ticket.TicketSummary
+                    <div class="row">
+                        <div class="col-md-12">
+                            <strong>Ticket Summary:</strong> <br />
+                            @Model.Ticket.TicketSummary
+                        </div>
+                        
+                    </div>
+                    <hr/>
+                    <div class="row">
+                        @if (Model.Ticket.AssignedToApplicationUser.Id == User.Identity.GetUserId() || User.IsInRole("CanManageTickets"))
+                        {
+                            using (Html.BeginForm("UpdateStatus", "Ticket"))
+                            {
+                                <div class="col-md-3">
+                                    <strong>Close Ticket</strong>
+                                    @Html.HiddenFor(c => c.Ticket.Id, new { Value = Model.Ticket.Id })
+                                    @Html.DropDownListFor(c => c.TicketStatus, selectList, new { @class = "form-control" })
+                                    <br/><button type="submit" class="btn btn-primary">Close Ticket</button>
+                                </div>
+                            }
+                        }
+                        
+                    </div>
+
                 </div><!--- Well End --->
             </div><!--- Column End --->
         </div><!--- Row End --->
@@ -64,7 +103,7 @@
                     <a href="@Url.Action("Take","Ticket", new {ticketId = Model.Ticket.Id})" class="btn btn-sm btn-primary">Not Assigned - Take Ticket</a>
                     }
 
-</div><!--- Well End --->
+                </div><!--- Well End --->
             </div><!--- Column End --->
 
             <div class="col-sm-4">
@@ -91,6 +130,65 @@
         
         
         
+        
+        
+
+        
+        <!--- FOURTH ROW --->
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="well">
+                    <strong>Add A Comment</strong>
+                    @using (Html.BeginForm("AddComments", "Ticket"))
+                    {
+                        <div class="form-group">
+                            @Html.TextAreaFor(c => c.NewComment.Comment, new { @class = "form-control", @rows = 10 })
+                            @Html.ValidationMessageFor(c => c.NewComment.Comment)
+                        </div>
+                        @Html.HiddenFor(c => c.NewComment.RelatedTicketId, new{ id= "RelatedTicketId", Value = Model.Ticket.Id})
+                        <button type="submit" class="btn btn-primary">Add Comment</button>
+                    }
+
+
+                </div><!--- Well End --->
+            </div><!--- Column End --->
+
+            
+            <div class="col-sm-6">
+                <div class="well">
+                    <strong>Comments:</strong> 
+                    @if (Model.Comments.Count > 0)
+                    {
+                        foreach (var comment in Model.Comments)
+                        {
+                        <div class="well">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <strong>Posted By:</strong> <a href="mailto:@comment.PostedBy.Email">@comment.PostedBy.FirstName @comment.PostedBy.LastName</a>
+                                    
+                                </div>
+                                <div class="col-md-6">
+                                    <strong>Posted On:</strong> @comment.PostedOn.ToString("mm/dd/yyyy - hh:mm")
+                                </div>
+                            </div>
+                            <hr/>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <strong>Comment:</strong><br/>
+                                    @comment.Comment
+                                </div>
+                            </div>
+                        </div>
+                        }
+                    }
+                    else
+                    {
+                        <span> -- No Comments --</span>
+                    }
+                   
+                </div><!--- Well End --->
+            </div><!--- Column End --->
+        </div> <!--- Row End --->
         
         
         

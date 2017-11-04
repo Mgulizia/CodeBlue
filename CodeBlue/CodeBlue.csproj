@@ -251,12 +251,33 @@
     <Compile Include="Migrations\201711012221441_makeTicketStatusAndTicketPriorityNonNullable2.Designer.cs">
       <DependentUpon>201711012221441_makeTicketStatusAndTicketPriorityNonNullable2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201711032125300_AddCommentsModel.cs" />
+    <Compile Include="Migrations\201711032125300_AddCommentsModel.Designer.cs">
+      <DependentUpon>201711032125300_AddCommentsModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711032135074_addCommentsToTicketModel.cs" />
+    <Compile Include="Migrations\201711032135074_addCommentsToTicketModel.Designer.cs">
+      <DependentUpon>201711032135074_addCommentsToTicketModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711032157492_changeCommentPostedByFromIntToString.cs" />
+    <Compile Include="Migrations\201711032157492_changeCommentPostedByFromIntToString.Designer.cs">
+      <DependentUpon>201711032157492_changeCommentPostedByFromIntToString.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711041558507_removeCommentsModelFromDatabase.cs" />
+    <Compile Include="Migrations\201711041558507_removeCommentsModelFromDatabase.Designer.cs">
+      <DependentUpon>201711041558507_removeCommentsModelFromDatabase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711041600148_ReAddCommentsModelToDatabaseWithoutStupidID.cs" />
+    <Compile Include="Migrations\201711041600148_ReAddCommentsModelToDatabaseWithoutStupidID.Designer.cs">
+      <DependentUpon>201711041600148_ReAddCommentsModelToDatabaseWithoutStupidID.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\SeedData\SeedAccounts.cs" />
     <Compile Include="Migrations\SeedData\SeedDepartments.cs" />
     <Compile Include="Migrations\SeedData\SeedPositions.cs" />
     <Compile Include="Migrations\SeedData\SeedTicketStatuses.cs" />
     <Compile Include="Migrations\SeedData\SeedRoles.cs" />
+    <Compile Include="Models\Comments.cs" />
     <Compile Include="Models\Department.cs" />
     <Compile Include="Models\Helpers\PhoneHelper.cs" />
     <Compile Include="Models\Helpers\RoleHelper.cs" />
@@ -399,6 +420,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201711012221441_makeTicketStatusAndTicketPriorityNonNullable2.resx">
       <DependentUpon>201711012221441_makeTicketStatusAndTicketPriorityNonNullable2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711032125300_AddCommentsModel.resx">
+      <DependentUpon>201711032125300_AddCommentsModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711032135074_addCommentsToTicketModel.resx">
+      <DependentUpon>201711032135074_addCommentsToTicketModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711032157492_changeCommentPostedByFromIntToString.resx">
+      <DependentUpon>201711032157492_changeCommentPostedByFromIntToString.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711041558507_removeCommentsModelFromDatabase.resx">
+      <DependentUpon>201711041558507_removeCommentsModelFromDatabase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711041600148_ReAddCommentsModelToDatabaseWithoutStupidID.resx">
+      <DependentUpon>201711041600148_ReAddCommentsModelToDatabaseWithoutStupidID.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
