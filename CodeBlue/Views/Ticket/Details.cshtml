@@ -66,36 +66,40 @@
                     </div>
                     <hr/>
                     <div class="row">
-                        @if (Model.Ticket.AssignedToApplicationUser.Id == User.Identity.GetUserId() || User.IsInRole("CanManageTickets"))
+                        @if (Model.Ticket.AssignedToApplicationUser != null)
                         {
-                            using (Html.BeginForm("UpdateStatus", "Ticket"))
+                            if (Model.Ticket.AssignedToApplicationUser.Id == User.Identity.GetUserId() || User.IsInRole("CanManageTickets"))
                             {
-                                <div class="col-md-3">
-                                    <strong>Close Ticket</strong>
-                                    @Html.HiddenFor(c => c.Ticket.Id, new { Value = Model.Ticket.Id })
-                                    @Html.DropDownListFor(c => c.TicketStatus, selectList, new { @class = "form-control" })
-                                    <br/><button type="submit" class="btn btn-primary">Close Ticket</button>
-                                </div>
+                                using (Html.BeginForm("UpdateStatus", "Ticket"))
+                                {
+                                    <div class="col-md-3">
+                                        <strong>Close Ticket</strong>
+                                        @Html.HiddenFor(c => c.Ticket.Id, new { Value = Model.Ticket.Id })
+                                        @Html.DropDownListFor(c => c.TicketStatus, selectList, new { @class = "form-control" })
+                                        <br /><button type="submit" class="btn btn-primary">Close Ticket</button>
+                                    </div>
+                                }
                             }
                         }
+                        
                         @if (User.IsInRole("CanManageTickets"))
                         {
                             using (Html.BeginForm("UpdateTecnician", "Ticket"))
                             {
                                 <div class="col-md-3">
                                     <strong>Reassign Ticket</strong>
-                                    @Html.HiddenFor(c => c.Ticket.Id, new { Value = Model.Ticket.Id })
-                                    @Html.DropDownListFor(c => c.Ticket.AssignedToApplicationUserId, Model.Technicians.Select(p => new SelectListItem{Value = p.Id, Text = p.LastName + " - " + p.Position.TitleDescription}), new { @class = "form-control" })
-                                    <br /><button type="submit" class="btn btn-primary">Re-Assign Ticket</button>
+                                    @Html.HiddenFor(c => c.Ticket.Id, new {Value = Model.Ticket.Id})
+                                    @Html.DropDownListFor(c => c.Ticket.AssignedToApplicationUserId, Model.Technicians.Select(p => new SelectListItem {Value = p.Id, Text = p.LastName + " - " + p.Position.TitleDescription}), new {@class = "form-control"})
+                                    <br/><button type="submit" class="btn btn-primary">Re-Assign Ticket</button>
                                 </div>
                             }
-                       
+
                             using (Html.BeginForm("EscalateTicket", "Ticket"))
                             {
                                 <div class="col-md-3">
                                     <strong>Escalate Ticket</strong>
                                     @Html.HiddenFor(c => c.Ticket.Id, new {Value = Model.Ticket.Id})
-                                    <br/><br /><button type="submit" class="btn btn-warning">Escalate Ticket</button>
+                                    <br/><br/><button type="submit" class="btn btn-warning">Escalate Ticket</button>
                                 </div>
                             }
 
@@ -103,9 +107,9 @@
                             {
                                 <div class="col-md-3">
                                     <strong>Override Ticket Status</strong>
-                                    @Html.HiddenFor(c => c.Ticket.Id, new { Value = Model.Ticket.Id })
-                                    @Html.DropDownListFor(c => c.Ticket.TicketStatusId, Model.TicketStatuses.Select(p => new SelectListItem{Value = p.Id.ToString(), Text = p.StatusDescription}), new { @class = "form-control" })
-                                    <br /><button type="submit" class="btn btn-primary">Override Status</button>
+                                    @Html.HiddenFor(c => c.Ticket.Id, new {Value = Model.Ticket.Id})
+                                    @Html.DropDownListFor(c => c.Ticket.TicketStatusId, Model.TicketStatuses.Select(p => new SelectListItem {Value = p.Id.ToString(), Text = p.StatusDescription}), new {@class = "form-control"})
+                                    <br/><button type="submit" class="btn btn-primary">Override Status</button>
                                 </div>
                             }
 
@@ -123,7 +127,7 @@
                                     <div class="col-md-3">
                                         <strong>Escalate Ticket</strong>
                                         @Html.HiddenFor(c => c.Ticket.Id, new {Value = Model.Ticket.Id})
-                                        <br/><br /><button type="submit" class="btn btn-warning">Escalate Ticket</button>
+                                        <br/><br/><button type="submit" class="btn btn-warning">Escalate Ticket</button>
                                     </div>
                                 }
                             }
