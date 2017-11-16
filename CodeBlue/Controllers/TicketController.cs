@@ -170,6 +170,12 @@ namespace CodeBlue.Controllers
                 var ticketInDb = _context.Tickets.Single(c => c.Id == model.Ticket.Id);
                 ticketInDb.TicketStatusId = model.TicketStatus;
                 ticketInDb.CompletedDate = DateTime.Now;
+                if (model.TicketStatus == 2 || model.TicketStatus == 6 || model.TicketStatus == 7 ||
+                    model.TicketStatus == 8)
+                {
+                    var currentUser = UserManager.FindById(User.Identity.GetUserId());
+                    ticketInDb.ClosedByApplicationUserId = currentUser.Id;
+                }
                 _context.SaveChanges();
             }
             
@@ -208,6 +214,7 @@ namespace CodeBlue.Controllers
 
             var ticketInDb = _context.Tickets.Single(c => c.Id == model.Ticket.Id);
             ticketInDb.TicketStatusId = model.Ticket.TicketStatusId;
+            var currentUser = UserManager.FindById(User.Identity.GetUserId());
 
             switch (model.Ticket.TicketStatusId)
             {
@@ -220,12 +227,13 @@ namespace CodeBlue.Controllers
                 case 7:
                 case 8:
                     ticketInDb.CompletedDate = DateTime.Now;
+                    ticketInDb.CreatedByApplicationUserId = currentUser.Id;
                     break;
                 case 3:
                 case 5:
                     if (model.Ticket.CompletedDate != null) ticketInDb.CompletedDate = null;
                     break;
-            }
+            } 
             _context.SaveChanges();
 
             return RedirectToAction("View", "Ticket", new { ticketId = model.Ticket.Id });

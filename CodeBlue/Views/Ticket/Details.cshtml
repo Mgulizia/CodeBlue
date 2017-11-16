@@ -173,8 +173,8 @@
                     <strong>Ticket Closed On:</strong> 
                 @if (Model.Ticket.ClosedByApplicationUser != null)
                 {
-                    <p>The Date isn't working... its stupid.</p>
-                    
+                    @Model.Ticket.CompletedDate.ToString();
+
                     <a href="mailto:@Model.Ticket.ClosedByApplicationUser.Email">@Model.Ticket.ClosedByApplicationUser.FirstName @Model.Ticket.ClosedByApplicationUser.LastName</a>
                 }
                 else
