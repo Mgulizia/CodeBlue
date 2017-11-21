@@ -1,0 +1,22 @@
+﻿@using CodeBlue.Models
+@model CodeBlue.ViewModels.Accounts.ManageViewModel
+@using Microsoft.AspNet.Identity
+@*@model CodeBlue.ViewModels.*@
+
+@{
+    ViewBag.Title = "Knowledge Base";
+    var user = System.Web.HttpContext.Current.User.Identity;
+}
+
+<br/>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        @if (User.IsInRole(RoleNames.CanAddArticles))
+        {
+            <div class="btn-toolbar pull-right" style="margin: 14px 0px;">
+                @Html.ActionLink("Add an Article", "Create", "KnowledgeBase", new { }, new { @class = "btn btn-primary" })
+            </div>
+        }
+        <h2>@ViewBag.Title</h2>
+    </div>
+</div>

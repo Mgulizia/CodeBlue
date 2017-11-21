@@ -9,6 +9,9 @@
 
 <div class="panel panel-default">
     <div class="panel-heading">
+        <div class="btn-toolbar pull-right" style="margin: 14px 0px;">
+            @Html.ActionLink("Create a Ticket", "Ticket", "Ticket", new { }, new { @class = "btn btn-primary" })
+        </div>
         <h2>Ticket Manager</h2>
     </div>
     <div class="panel-body">
@@ -28,7 +31,6 @@
             
             <div id="myTickets" class="tab-pane fade in active">
                 <h4>
-                    <a href="@Url.Action("Create", "Ticket")" class="btn btn-primary pull-right">Create a Ticket</a>
                     My Tickets
                 </h4>
                 <br/>

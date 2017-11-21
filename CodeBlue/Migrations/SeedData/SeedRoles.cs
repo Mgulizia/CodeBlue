@@ -20,6 +20,8 @@ namespace CodeBlue.Migrations.SeedData
             roles.Add("CanManagePositions", "Manage Support Postions");
             roles.Add("CanManageTickets", "Can Manage and Assign Tickets");
             roles.Add("CanTakeTickets", "Technician can take on ticket tasks");
+            roles.Add("CanAddArticles", "Can add an article to the Knowledge Base");
+            roles.Add("CanManageArticles", "Can edit or delete articles in the Knowledge Base");
             roles.Add("BasicUser", "Basic User Account");
 
             foreach (var role in roles)

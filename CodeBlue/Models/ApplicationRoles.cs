@@ -19,6 +19,8 @@ namespace CodeBlue.Models
     {
         public const string CanManageUsers = "CanManageUsers";
         public const string CanManagePositions = "CanManagePositions";
+        public const string CanAddArticles = "CanAddArticles";
+        public const string CanManageArticles = "CanManageArticles";
         public const string BasicUser = "BasicUser";
     }
     

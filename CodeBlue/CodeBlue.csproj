@@ -194,6 +194,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\KnowledgeBaseController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\TicketController.cs" />
     <Compile Include="Global.asax.cs">
@@ -367,6 +368,8 @@
     <Content Include="Views\Ticket\AssignedTo.cshtml" />
     <Content Include="Views\Ticket\_myAssignedTickets.cshtml" />
     <Content Include="Views\Ticket\_availableTickets.cshtml" />
+    <Content Include="Views\KnowledgeBase\Index.cshtml" />
+    <Content Include="Views\KnowledgeBase\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
