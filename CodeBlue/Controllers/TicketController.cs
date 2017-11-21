@@ -69,6 +69,7 @@ namespace CodeBlue.Controllers
             var myAssignedTickets = _context.Tickets
                 .Include(c => c.Department)
                 .Include(c => c.CreatedByApplicationUser)
+                .Include(c => c.TicketStatus)
                 .Where(c=>c.AssignedToApplicationUserId == currentUser.Id && c.TicketStatusId != 2 && c.TicketStatusId < 6)
                 .ToList();
 
