@@ -46,5 +46,10 @@ namespace CodeBlue.Controllers
 
             return View("View");
         }
+
+        public ActionResult Details()
+        {
+            return View();
+        }
     }
 }
