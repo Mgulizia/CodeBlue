@@ -44,6 +44,9 @@ namespace CodeBlue.Controllers
                 Userid = userId
             };
 
+            _context.KnowledgeBase.Add(addArticle);
+            _context.SaveChanges();
+
             return View("View");
         }
 
