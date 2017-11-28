@@ -375,6 +375,7 @@
     <Content Include="Views\Ticket\_availableTickets.cshtml" />
     <Content Include="Views\KnowledgeBase\Index.cshtml" />
     <Content Include="Views\KnowledgeBase\Create.cshtml" />
+    <Content Include="Views\KnowledgeBase\View.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
