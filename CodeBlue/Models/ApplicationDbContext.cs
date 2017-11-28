@@ -17,7 +17,7 @@ namespace CodeBlue.Models
         public DbSet<Department> Departments { get; set; }
         public DbSet<TicketStatus> TicketStatuses { get; set; }
         public DbSet<Comments> Comments { get; set; }
-
+        public DbSet<KnowledgeBase> KnowledgeBase { get; set; }
 
 
 
