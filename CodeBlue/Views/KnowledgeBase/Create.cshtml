@@ -1,4 +1,4 @@
-﻿@model CodeBlue.Models.KnowledgeBase
+﻿@model CodeBlue.ViewModels.KnowledgeBase.KnowledgeBaseCreateViewModel
 
 @{
     ViewBag.Title = "Create Article";
@@ -7,7 +7,7 @@
 <h2>Create Article</h2>
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm("Save","KnowledgeBase")) 
 {
     @Html.AntiForgeryToken()
     
@@ -15,29 +15,31 @@
         <h4>KnowledgeBase</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        
         <div class="form-group">
-            @Html.LabelFor(model => model.ArticleTitle, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.KnowledgeBase.Category, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ArticleTitle, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ArticleTitle, "", new { @class = "text-danger" })
+                @Html.DropDownListFor(m => m.KnowledgeBase.Category, new SelectList(Model.KnowledgeBaseCatagories, "CatagoryName", "CatagoryName"), " -- Select Catagory --", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.KnowledgeBase.Category, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Article, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.KnowledgeBase.ArticleTitle, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Article, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Article, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.KnowledgeBase.ArticleTitle, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.KnowledgeBase.ArticleTitle, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Category, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.KnowledgeBase.Article, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Category, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Category, "", new { @class = "text-danger" })
+                @Html.TextAreaFor(model => model.KnowledgeBase.Article, new { @class = "text-danger form-control", rows = 10 })
             </div>
         </div>
+
+        
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">

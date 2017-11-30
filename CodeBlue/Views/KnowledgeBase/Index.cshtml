@@ -1,6 +1,6 @@
 ﻿@using CodeBlue.Models
-@model CodeBlue.ViewModels.Accounts.ManageViewModel
-@using Microsoft.AspNet.Identity
+@model CodeBlue.ViewModels.KnowledgeBase.KnowledgeBaseIndexViewModel
+
 @*@model CodeBlue.ViewModels.*@
 
 @{
@@ -17,6 +17,38 @@
                 @Html.ActionLink("Add an Article", "Create", "KnowledgeBase", new { }, new { @class = "btn btn-primary" })
             </div>
         }
-        <h2>@ViewBag.Title</h2>
+        <h2>Create Aricles</h2>
     </div>
+    <div class="panel-body">
+        
+        @if (Model.CurrentKnowledgeBase.Count > 0)
+        {
+            <table class="table table-responsive table-striped">
+                <tr>
+                    <th>Article Title</th>
+                    <th style="display: none">Ticket Subject</th>
+                    <th>Date Added</th>
+                    
+                </tr>
+                @{
+                    foreach (var article in Model.CurrentKnowledgeBase)
+                    {
+                        <tr>
+                            <td>@article.ArticleTitle</td>
+                            <td style="display: none">@article.Article</td>
+                            <td>@article.DateAdded.ToString("d")</td>
+                        </tr>
+                    }
+                }
+            </table>
+        }
+        else
+        {
+            <p>No one has any issues! The sign of a great IT Department!</p>
+        }
+    </div>
+    
+    
+    
+
 </div>

@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using CodeBlue.Models;
 using CodeBlue.ViewModels.Accounts;
+using CodeBlue.ViewModels.KnowledgeBase;
 using Microsoft.AspNet.Identity;
 
 namespace CodeBlue.Controllers
@@ -13,42 +14,54 @@ namespace CodeBlue.Controllers
     {
         private ApplicationDbContext _context;
 
+        public KnowledgeBaseController()
+        {
+            _context = new ApplicationDbContext();
+        }
+
         // GET: KnowledgeBase
         public ActionResult Index()
         {
-            return View();
+            var vm = new KnowledgeBaseIndexViewModel
+            {
+                CurrentKnowledgeBase = _context.KnowledgeBase.ToList()
+            };
+            
+            return View("Index", vm);
         }
 
         public ActionResult Create()
         {
+            var knowledgeBase = new KnowledgeBase();
+            var catagories = _context.KnowledgeBaseCatagories.ToList();
+            var vm = new KnowledgeBaseCreateViewModel
+            {
+                KnowledgeBase = knowledgeBase,
+                KnowledgeBaseCatagories = catagories
+            };
 
-            return View();
+            return View("Create", vm);
         }
 
         [HttpPost]
-        public ActionResult Create(KnowledgeBase model)
+        public ActionResult Save(KnowledgeBaseCreateViewModel model)
         {
-            _context = new ApplicationDbContext();
-
-            var title = model.ArticleTitle;
-            var article = model.Article;
-            var category = model.Category;
-            var dateAdded = DateTime.Today;
-            var userId = User.Identity.GetUserId();
-
-            var addArticle = new KnowledgeBase()
+            var item = new KnowledgeBase
             {
-                ArticleTitle = title,
-                Article = article,
-                Category = category,
-                DateAdded = dateAdded,
-                Userid = userId
+                ArticleTitle = model.KnowledgeBase.ArticleTitle,
+                Article = model.KnowledgeBase.Article,
+                Category = model.KnowledgeBase.Category,
+                DateAdded = DateTime.Today,
+                Userid = User.Identity.GetUserId()
+
             };
 
-            _context.KnowledgeBase.Add(addArticle);
+            
+
+            _context.KnowledgeBase.Add(item);
             _context.SaveChanges();
 
-            return View("View");
+            return View("Index");
         }
 
         public ActionResult Details()
