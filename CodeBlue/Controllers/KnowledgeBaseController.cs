@@ -61,12 +61,13 @@ namespace CodeBlue.Controllers
             _context.KnowledgeBase.Add(item);
             _context.SaveChanges();
 
-            return View("Index");
+            return RedirectToAction("Index", "KnowledgeBase");
         }
 
-        public ActionResult Details()
+        public ActionResult View(int id)
         {
-            return View();
+            var knowledgeBase = _context.KnowledgeBase.SingleOrDefault(c => c.KnowledgeBaseId == id);
+            return View("View", knowledgeBase);
         }
     }
 }

@@ -1,53 +1,38 @@
-﻿@model IEnumerable<CodeBlue.Models.KnowledgeBase>
+﻿@model CodeBlue.Models.KnowledgeBase
 
 @{
     ViewBag.Title = "View";
 }
+<br/>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4>View Knowledge Base Article</h4>
+    </div>
+    <div class="panel-body">
+        <div class="container-fluid">
+            
+            <div class="row well">
+                <div class="col-sm-12">
+                    <h4><strong>Title: </strong>@Model.ArticleTitle</h4>
+                </div>
+            </div>
 
-<h2>View</h2>
+            <div class="row well">
+                <div class="col-sm-12">
+                    <p>@Model.Article</p>
+                </div>
+            </div>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.ArticleTitle)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Article)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Category)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DateAdded)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Userid)
-        </th>
-        <th></th>
-    </tr>
+            <div class="row well">
+                <div class="col-sm-12">
+                    <p><strong>Date Added: </strong>@Model.DateAdded.ToString("D")</p>
+                </div>
+            </div>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.ArticleTitle)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Article)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Category)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DateAdded)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Userid)
-        </td>
+        </div>
         
-    </tr>
-}
 
-</table>
+
+
+    </div>
+</div>
