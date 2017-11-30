@@ -30,6 +30,9 @@ namespace CodeBlue.Migrations
 
             // Seed Ticket Statuses
             SeedTicketStatuses.Seed();
+            
+            // Seed Ticket Statuses
+            SeedKnowledgeBaseCatagories.Seed();
 
 
         }

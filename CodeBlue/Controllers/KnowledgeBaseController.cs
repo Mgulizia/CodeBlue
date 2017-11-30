@@ -21,6 +21,7 @@ namespace CodeBlue.Controllers
 
         public ActionResult Create()
         {
+
             return View();
         }
 

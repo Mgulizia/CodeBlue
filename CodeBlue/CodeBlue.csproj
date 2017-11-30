@@ -280,8 +280,13 @@
     <Compile Include="Migrations\201711280041240_addknowledgebasemodel.Designer.cs">
       <DependentUpon>201711280041240_addknowledgebasemodel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201711300014063_addKnowledgeBaseCatagories.cs" />
+    <Compile Include="Migrations\201711300014063_addKnowledgeBaseCatagories.Designer.cs">
+      <DependentUpon>201711300014063_addKnowledgeBaseCatagories.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\SeedData\SeedAccounts.cs" />
+    <Compile Include="Migrations\SeedData\SeedKnowledgeBaseCatagories.cs" />
     <Compile Include="Migrations\SeedData\SeedDepartments.cs" />
     <Compile Include="Migrations\SeedData\SeedPositions.cs" />
     <Compile Include="Migrations\SeedData\SeedTicketStatuses.cs" />
@@ -290,6 +295,7 @@
     <Compile Include="Models\Department.cs" />
     <Compile Include="Models\Helpers\PhoneHelper.cs" />
     <Compile Include="Models\Helpers\RoleHelper.cs" />
+    <Compile Include="Models\KnowledgeBaseCatagory.cs" />
     <Compile Include="Models\KnowledgeBase.cs" />
     <Compile Include="Models\Ticket.cs" />
     <Compile Include="Models\TicketStatus.cs" />
@@ -456,6 +462,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201711280041240_addknowledgebasemodel.resx">
       <DependentUpon>201711280041240_addknowledgebasemodel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711300014063_addKnowledgeBaseCatagories.resx">
+      <DependentUpon>201711300014063_addKnowledgeBaseCatagories.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

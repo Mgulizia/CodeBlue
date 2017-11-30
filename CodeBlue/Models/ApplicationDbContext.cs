@@ -18,6 +18,7 @@ namespace CodeBlue.Models
         public DbSet<TicketStatus> TicketStatuses { get; set; }
         public DbSet<Comments> Comments { get; set; }
         public DbSet<KnowledgeBase> KnowledgeBase { get; set; }
+        public DbSet<KnowledgeBaseCatagory> KnowledgeBaseCatagories { get; set; }
 
 
 
