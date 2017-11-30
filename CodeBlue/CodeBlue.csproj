@@ -310,6 +310,8 @@
     <Compile Include="Models\Position.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\KnowledgeBase\KnowledgeBaseIndexViewModel.cs" />
+    <Compile Include="ViewModels\KnowledgeBase\KnowledgeBaseCreateViewModel.cs" />
     <Compile Include="ViewModels\Ticket\TicketCrudViewModel.cs" />
     <Compile Include="ViewModels\Ticket\TicketDetailsViewModel.cs" />
     <Compile Include="ViewModels\Ticket\TicketIndexViewModel.cs" />
