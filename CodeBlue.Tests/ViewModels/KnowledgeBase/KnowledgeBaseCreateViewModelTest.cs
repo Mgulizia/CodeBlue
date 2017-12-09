@@ -1,10 +1,10 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace CodeBlue.Tests.Models
+namespace CodeBlue.Tests.ViewModels.KnowledgeBase
 {
     [TestClass]
-    public class ApplicationUserTest
+    public class KnowledgeBaseCreateViewModelTest
     {
         [TestMethod]
         public void TestMethod1()

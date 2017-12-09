@@ -35,26 +35,13 @@ namespace CodeBlue.Tests.Controllers
         }
 
         [TestMethod]
-        public void Create(KnowledgeBase model)
+        public void View()
         {
             // Arrange
             KnowledgeBaseController controller = new KnowledgeBaseController();
 
             //Act
-            ViewResult result = controller.Create(model) as ViewResult;
-
-            //Assert
-            Assert.IsNotNull(result);
-        }
-
-        [TestMethod]
-        public void Details()
-        {
-            // Arrange
-            KnowledgeBaseController controller = new KnowledgeBaseController();
-
-            //Act
-            ViewResult result = controller.Details() as ViewResult;
+            ViewResult result = controller.View(5) as ViewResult;
 
             //Assert
             Assert.IsNotNull(result);

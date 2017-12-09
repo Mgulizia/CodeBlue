@@ -84,15 +84,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\AccountControllerTest.cs" />
     <Compile Include="Controllers\KnowledgeBaseControllerTest.cs" />
-    <Compile Include="Controllers\ManageControllerTest.cs" />
     <Compile Include="Controllers\TicketControllerTest.cs" />
     <Compile Include="Models\Helpers\PhoneHelperTest.cs" />
     <Compile Include="Models\Helpers\RoleHelperTest.cs" />
-    <Compile Include="Models\ApplicationDbContextTest.cs" />
     <Compile Include="Models\ApplicationRolesTest.cs" />
-    <Compile Include="Models\ApplicationUserTest.cs" />
     <Compile Include="Models\CommentsTest.cs" />
     <Compile Include="Models\DepartmentTest.cs" />
     <Compile Include="Models\KnowledgeBaseTest.cs" />
@@ -107,6 +103,8 @@
     <Compile Include="ViewModels\Accounts\ApplicationUserEditViewModelTest.cs" />
     <Compile Include="ViewModels\Accounts\ManageViewModelTest.cs" />
     <Compile Include="ViewModels\Accounts\ManageViewModelsTest.cs" />
+    <Compile Include="ViewModels\KnowledgeBase\KnowledgeBaseCreateViewModelTest.cs" />
+    <Compile Include="ViewModels\KnowledgeBase\KnowledgeBaseIndexViewModelTest.cs" />
     <Compile Include="ViewModels\Ticket\TicketCrudViewModelTest.cs" />
     <Compile Include="ViewModels\Ticket\TicketDetailsViewModelTest.cs" />
     <Compile Include="ViewModels\Ticket\TicketIndexViewModelTest.cs" />
