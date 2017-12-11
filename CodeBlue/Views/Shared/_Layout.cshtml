@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using CodeBlue.Models
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -22,7 +23,9 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    @if (User.IsInRole(RoleNames.CanManageUsers)) { 
                     <li>@Html.ActionLink("CodeBlue Users", "Index", "Account")</li>
+                    }
                     <li>@Html.ActionLink("Tickets", "Index", "Ticket")</li>
                     <li>@Html.ActionLink("Knowledge Base", "Index", "KnowledgeBase")</li>
                     

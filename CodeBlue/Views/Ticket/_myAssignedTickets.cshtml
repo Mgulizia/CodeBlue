@@ -22,7 +22,7 @@
                         <td>@ticket.CreatedByApplicationUser.FirstName @ticket.CreatedByApplicationUser.LastName</td>
                         <td>@Html.Raw(ticket.TicketStatus.StatusLabel())</td>
                         <td>
-                            <a href="@Url.Action("Manage", "Ticket")" class="btn btn-sm btn-primary"><span class='glyphicon glyphicon-pencil'></span> Edit</a>
+                            
                             <a href="@Url.Action("View", "Ticket", new { ticketId = ticket.Id } )" class="btn btn-sm btn-primary"><span class='glyphicon glyphicon-info-sign '></span> View</a>
                         </td>
                     </tr>
