@@ -20,35 +20,38 @@
         <h2>Create Aricles</h2>
     </div>
     <div class="panel-body">
-        
-        @if (Model.CurrentKnowledgeBase.Count > 0)
+        @if (Model.CurrentKnowledgeBase != null)
         {
-            <table id="kbtable" class="table table-responsive table-striped">
-                <thead>
-                <tr>
-                    <th>Article Id</th>
-                    <th>Article Title</th>
-                    <th style="display: none">Ticket Subject</th>
-                    <th>Date Added</th>
-
-                </tr>
-                </thead>
-                <tbody>
-                @{
-                    foreach (var article in Model.CurrentKnowledgeBase)
-                    {
+            if (Model.CurrentKnowledgeBase.Count > 0)
+            {
+                <table id="kbtable" class="table table-responsive table-striped">
+                    <thead>
                         <tr>
-                            <td>@Html.ActionLink(article.KnowledgeBaseId.ToString(), "View", "KnowledgeBase", new { id = article.KnowledgeBaseId }, new { @class = "btn btn-primary" })</td>
-                            <td>@article.ArticleTitle</td>
-                            <td style="display: none">@article.Article</td>
-                            <td>@article.DateAdded.ToString("d")</td>
+                            <th>Article Id</th>
+                            <th>Article Title</th>
+                            <th style="display: none">Ticket Subject</th>
+                            <th>Date Added</th>
+
                         </tr>
-                    }
-                }
-                </tbody>
-                
-                
-            </table>
+                    </thead>
+                    <tbody>
+                        @{
+                            foreach (var article in Model.CurrentKnowledgeBase)
+                            {
+                                <tr>
+                                    <td>@Html.ActionLink(article.KnowledgeBaseId.ToString(), "View", "KnowledgeBase", new { id = article.KnowledgeBaseId }, new { @class = "btn btn-primary" })</td>
+                                    <td>@article.ArticleTitle</td>
+                                    <td style="display: none">@article.Article</td>
+                                    <td>@article.DateAdded.ToString("d")</td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+
+
+                </table>
+            }
+
         }
         else
         {

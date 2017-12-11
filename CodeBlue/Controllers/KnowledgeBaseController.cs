@@ -27,7 +27,7 @@ namespace CodeBlue.Controllers
                 CurrentKnowledgeBase = _context.KnowledgeBase.ToList()
             };
             
-            return View();
+            return View("index", vm);
         }
 
         public ActionResult Create()
